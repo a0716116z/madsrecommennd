@@ -13,6 +13,7 @@
       * {
         font-family: "微軟正黑體", serif;
         box-sizing: border-box;
+        scroll-behavior: smooth;
       }
       body {
         background: #333333;
@@ -187,7 +188,7 @@
         pointer-events: none;
       }
       .for-dropdown-sub,
-      a,
+      .drop-menu a,
       .for-dropdown {
         font-size: 19px;
         color: rgba(255, 99, 133, 0.624);
@@ -284,6 +285,30 @@
           width: 80%;
         }
       }
+      .totop {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        z-index: 1000;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        background: rgb(255, 255, 255);
+        justify-content: center;
+        color: #333333;
+        font-size: 30px;
+        opacity: 0;
+        transition: 0.2s;
+        box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
+          rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+        text-decoration: none;
+      }
+      .totop.active {
+        opacity: 1;
+      }
       @media (max-width: 780px) {
         .searchgroup {
           width: 95%;
@@ -350,6 +375,9 @@
     </style>
   </head>
   <body>
+    <a href="#" class="totop">
+      <i class="fas fa-chevron-circle-up"></i>
+    </a>
     <div class="searchgroup">
       <section class="intro">
         <div class="container-fluid">
@@ -783,7 +811,14 @@
       RadarCharts[index].update();
     }
     window.onload = SearchFunction;
-
+    const toTop = document.querySelector(".totop");
+    window.addEventListener("scroll", () => {
+      if (window.pageYOffset > 100) {
+        toTop.classList.add("active");
+      } else {
+        toTop.classList.remove("active");
+      }
+    });
     // const myJSON = '[{"id":[1,2,3,4,5]},{"id":[4,2,3,4,2]}]';
     // let loc = JSON.parse(fs.readFileSync("./localdata.json"));
 
