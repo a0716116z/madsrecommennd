@@ -1,6 +1,7 @@
 .intro {
   display: inline-block;
   text-align: center;
+  overflow: hidden;
   /* border-left: 4px solid rgba(255, 99, 133, 0.95); */
   background: #ecf0f1;
   box-shadow: 0 1px 1px hsl(0deg 0% 0% / 0.075),
@@ -63,5 +64,20 @@
   }
   100% {
     fill-opacity: 1;
+  }
+}
+@media (max-width: 780px) {
+  .intro #NameContainer {
+    /* left: px; */
+    right: 20px;
+    top: -12.5px;
+  }
+  .intro {
+    overflow: hidden;
+    display: inline-block;
+    width: 120px;
+    height: 55px;
+    margin: 0 0px 10px 0;
+    /* background: #000; */
   }
 }
