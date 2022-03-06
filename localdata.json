@@ -1,0 +1,38 @@
+[
+ {
+  "classname": "科技藝術導論",
+  "tag": "設計,人文,導論",
+  "value": "3,3,3,3,3",
+  "url": "google.com",
+  "credit": 2,
+  "classify": "A",
+  "time": "T34"
+ },
+ {
+  "classname": "資訊技術導論",
+  "tag": "說故事",
+  "value": "2,4,1,5,2",
+  "url": "facebook.com",
+  "credit": 3,
+  "classify": "A",
+  "time": "M567"
+ },
+ {
+  "classname": "說故事魔法工作坊",
+  "tag": "音樂藝術,影片製作",
+  "value": "2,2,3,4,3",
+  "url": "twitter.com",
+  "credit": 2,
+  "classify": "C",
+  "time": "R12"
+ },
+ {
+  "classname": "體育籃球（乙）",
+  "tag": "運動",
+  "value": "4,4,1,5,3",
+  "url": "yahoo.com",
+  "credit": 2,
+  "classify": "A",
+  "time": "F34"
+ }
+]

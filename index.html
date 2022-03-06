@@ -1,0 +1,779 @@
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale = 1, user-scalable = no" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="text/javascript" src="localdata.json"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link rel="stylesheet" href="./iconstyle.css" />
+    <style>
+      * {
+        font-family: "微軟正黑體", serif;
+        box-sizing: border-box;
+      }
+      body {
+        background: #333333;
+        overflow-x: hidden;
+        background-image: url("./lines.png");
+        background-position: center;
+        background-repeat: repeat;
+        background-size: 4%;
+      }
+      .bar {
+        width: 50%;
+        margin: 20px auto;
+        display: flex;
+        font-size: 16px;
+        height: 400px;
+        /* margin: 20px; */
+        /* border: 2px solid black; */
+        background-color: rgb(226, 225, 224);
+        /* z-index: -2; */
+        box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
+          rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+      }
+
+      .chart {
+        padding: 40px;
+        /* background: rgb(247, 226, 226); */
+        position: relative;
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .name {
+        font-weight: 800;
+        font-size: 36px;
+        text-align: center;
+        letter-spacing: 1px;
+        line-height: 1.5;
+      }
+      .group {
+        position: absolute;
+        left: 20px;
+        bottom: 10%;
+      }
+
+      .button {
+        float: left;
+        margin: 0 8px;
+        font-size: 18px;
+        font-weight: 500;
+        letter-spacing: 1px;
+        padding: 13px 20px 13px;
+        outline: 0;
+        border: 1px solid black;
+        cursor: pointer;
+        position: relative;
+        background-color: rgba(0, 0, 0, 0);
+        user-select: none;
+        z-index: 2;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+      }
+      .text {
+        z-index: 10;
+      }
+
+      .button:after {
+        content: "";
+        background-color: rgba(255, 99, 132, 0.2);
+        width: 100%;
+        z-index: 1;
+        position: absolute;
+        height: 100%;
+        top: 7px;
+        left: 7px;
+        transition: 0.2s;
+      }
+      .tag {
+        display: inline-block;
+        background: rgb(167, 218, 169);
+        padding: 2px;
+        line-height: 1.2;
+        letter-spacing: 0.7px;
+        margin: 0px 2px;
+      }
+
+      .button:hover:after {
+        top: 0px;
+        left: 0px;
+      }
+      .illustrator {
+        height: 400px;
+        width: 400px;
+        /* background: #000; */
+      }
+      .card-footer {
+        /*position:fixed; /* Full card width/height */
+        /* position: absolute;  */
+        margin: 30px auto;
+        width: 100%;
+        bottom: 20px;
+      }
+      .stat {
+        box-sizing: border-box;
+        width: calc(100% / 3);
+        float: left;
+        text-align: center;
+        border-left: 2px solid #434343;
+      }
+      .stat:first-of-type {
+        border: none;
+      }
+      .stat .label {
+        display: block;
+        text-transform: uppercase;
+        font-weight: 300;
+        font-size: 11px;
+        letter-spacing: 1px;
+        color: #95989a;
+      }
+
+      .stat .value {
+        display: block;
+        font-weight: 700;
+        font-size: 20px;
+        margin-top: 5px;
+      }
+      .button {
+        padding: 13px 30px 13px;
+      }
+
+      #myInput {
+        outline: none;
+        color: rgba(255, 99, 133, 0.624);
+        background-position: 10px 12px;
+        width: 100%;
+        /* max-width: 600px; */
+        /* height: 40px; */
+        font-size: 20px;
+        border: 0px;
+        padding: 5px 10px;
+        /* margin-bottom: 12px; */
+        line-height: 1.2;
+        background-color: transparent;
+      }
+
+      #myInput::placeholder {
+        color: rgba(255, 99, 133, 0.624);
+      }
+      .cover {
+        width: 40%;
+        max-width: 600px;
+        margin: 20px 20px 20px 0px;
+        display: inline-block;
+        padding: 6px 10px;
+        background-color: #ebebeb;
+        border-left: 4px solid rgba(255, 99, 133, 0.95);
+        box-shadow: 0 1px 1px hsl(0deg 0% 0% / 0.075),
+          0 2px 2px hsl(0deg 0% 0% / 0.075), 0 4px 4px hsl(0deg 0% 0% / 0.075),
+          0 8px 8px hsl(0deg 0% 0% / 0.075), 0 16px 16px hsl(0deg 0% 0% / 0.075);
+        /* box-shadow: 0 10px 20px #ebd6e0, 0 0 0 20px #ffffffeb; */
+        /* transform: scale(0.6); */
+      }
+      [type="checkbox"]:checked,
+      [type="checkbox"]:not(:checked) {
+        position: absolute;
+        left: -9999px;
+        opacity: 0;
+        pointer-events: none;
+      }
+      .for-dropdown-sub,
+      a,
+      .for-dropdown {
+        font-size: 19px;
+        color: rgba(255, 99, 133, 0.624);
+        border-left: 4px solid rgba(255, 99, 133, 0.95);
+        border-radius: 0 0 0 0;
+        /* position: relative; */
+        text-decoration: none;
+        z-index: 100;
+        display: inline-block;
+        width: 150px;
+        background: #ecf0f1;
+        padding: 15px 20px;
+        cursor: pointer;
+        transition: all 200ms linear;
+        box-shadow: 0 1px 1px hsl(0deg 0% 0% / 0.075),
+          0 2px 2px hsl(0deg 0% 0% / 0.075), 0 4px 4px hsl(0deg 0% 0% / 0.075),
+          0 8px 8px hsl(0deg 0% 0% / 0.075), 0 16px 16px hsl(0deg 0% 0% / 0.075);
+      }
+      .drop-menu {
+        /* height: 50px; */
+        /* float: right; */
+        /* vertical-align: middle; */
+        width: 30%;
+        z-index: 20;
+        /* background: #223b61; */
+        position: relative;
+        /* background-color: #000; */
+        margin: auto 0 auto 0;
+        /* justify-content: center; */
+        display: inline-block;
+        /* align-items: center; */
+        /* display: flex; */
+      }
+      .section-dropdown,
+      .section-dropdown-sub {
+        visibility: hidden;
+        opacity: 0;
+        z-index: 1;
+        max-height: 0;
+        transition: all 200ms linear;
+      }
+      .section-dropdown-sub {
+        position: relative;
+        top: -20px;
+      }
+      .section-dropdown {
+        position: absolute;
+        z-index: 200;
+        /* top: 400px; */
+        /* top: 200px; */
+        left: 150px;
+      }
+      .dropdown:checked ~ .section-dropdown {
+        visibility: visible;
+        opacity: 1;
+        top: 0;
+        z-index: 2;
+        max-height: 200px;
+      }
+      .dropdown-sub:checked + .section-dropdown-sub {
+        visibility: visible;
+        opacity: 1;
+        top: 0;
+        z-index: 2;
+        max-height: 200px;
+      }
+      .fas,
+      .fa {
+        vertical-align: middle;
+        font-weight: 900;
+        padding: 0 3px;
+        visibility: visible;
+        /* font-size: 24px; */
+        /* color: #5e1351; */
+        /* background-color: aquamarine; */
+      }
+      .searchgroup {
+        /* display: flex; */
+        width: 50%;
+        /* background: #000; */
+        position: relative;
+        margin: auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        padding: 0;
+      }
+      @media (max-width: 1280px) and (min-width: 780px) {
+        .bar {
+          width: 80%;
+        }
+        .searchgroup {
+          width: 80%;
+        }
+      }
+      @media (max-width: 780px) {
+        .section-dropdown {
+          left: unset;
+          right: 150px;
+        }
+        .searchgroup {
+          width: 95%;
+          /* display: flex; */
+          /* flex-wrap: wrap; */
+          justify-content: left;
+        }
+        .cover {
+          display: inline-block;
+          /* background-color: #000; */
+          margin: 0 10px;
+        }
+        .intro {
+          display: inline;
+          /* background: #000; */
+        }
+        .drop-menu {
+          display: inline-block;
+        }
+        .bar {
+          width: 95%;
+          flex-direction: column;
+          padding: 2%;
+          height: auto;
+        }
+        .chart {
+          width: 100%;
+          padding: 0;
+          /* background: #000; */
+        }
+        .group {
+          position: relative;
+          margin-bottom: 20px;
+        }
+        .illustrator {
+          margin: auto;
+          /* background: #000; */
+        }
+        /* .stat {
+          width: calc(80% / 3);
+          background: #000;
+        } */
+        .card-footer {
+          width: 80%;
+          /* margin: auto; */
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="searchgroup">
+      <section class="intro">
+        <div class="container-fluid">
+          <div class="row">
+            <div id="NameContainer">
+              <svg id="NameSvg" viewbox="0 0 100 50">
+                <text
+                  class="name-tag"
+                  fill="#000"
+                  stroke="#000"
+                  text-anchor="middle"
+                  x="28%"
+                  y="50%"
+                  dy=".35em"
+                >
+                  X'
+                </text>
+                <text
+                  class="name-tag"
+                  fill="#d1c71a"
+                  stroke="#d1c71a"
+                  text-anchor="middle"
+                  x="45%"
+                  y="50%"
+                  dy=".35em"
+                >
+                  M
+                </text>
+                <text
+                  class="name-tag"
+                  fill="#de3812"
+                  stroke="#de3812"
+                  text-anchor="middle"
+                  x="57%"
+                  y="50%"
+                  dy=".35em"
+                >
+                  a
+                </text>
+                <text
+                  class="name-tag"
+                  fill="#fcc623"
+                  stroke="#fcc623"
+                  text-anchor="middle"
+                  x="67%"
+                  y="50%"
+                  dy=".35em"
+                >
+                  d
+                </text>
+                <text
+                  class="name-tag"
+                  fill="#68440a"
+                  stroke="#68440a"
+                  text-anchor="middle"
+                  x="77%"
+                  y="50%"
+                  dy=".35em"
+                >
+                  s
+                </text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="cover">
+        <input
+          type="text"
+          id="myInput"
+          onkeyup="SearchFunction()"
+          placeholder="輸入：課名、學程等關鍵字....."
+          title="輸入檢索資訊"
+        />
+      </div>
+      <!-- <select id="sortList" class="dropdown" onchange="favTutorial()">
+						<option>實用性</option>
+						<option>跨域力</option>
+						<option>難易度</option>
+						<option>實作度</option>
+						<option>理論度</option>
+					</select>
+				</div> -->
+      <div class="drop-menu">
+        <input class="dropdown" type="checkbox" id="dropdown" name="dropdown" />
+        <label class="for-dropdown" for="dropdown"
+          >排序方式<i class="fas fa-bars"></i
+        ></label>
+        <div class="section-dropdown">
+          <label class="for-dropdown-sub" for="dropdown-sub1"
+            >實用性 <i class="fas fa-dollar-sign"></i
+          ></label>
+          <input
+            class="dropdown-sub"
+            type="checkbox"
+            id="dropdown-sub1"
+            name="dropdown-sub1"
+          />
+          <div class="section-dropdown-sub">
+            <a href="#" onclick="sortColumn(0,1)"
+              >由低到高 <i class="fas fa-chevron-up"></i
+            ></a>
+            <a href="#" onclick="sortColumn(0,0)"
+              >由高到低 <i class="fas fa-chevron-down"></i
+            ></a>
+          </div>
+          <label class="for-dropdown-sub" for="dropdown-sub2"
+            >跨域力<i class="fas fa-project-diagram"></i
+          ></label>
+          <input
+            class="dropdown-sub"
+            type="checkbox"
+            id="dropdown-sub2"
+            name="dropdown-sub2"
+          />
+          <div class="section-dropdown-sub">
+            <a href="#" onclick="sortColumn(1,1)"
+              >由低到高 <i class="fas fa-chevron-up"></i
+            ></a>
+            <a href="#" onclick="sortColumn(1,0)"
+              >由高到低 <i class="fas fa-chevron-down"></i
+            ></a>
+          </div>
+          <label class="for-dropdown-sub" for="dropdown-sub3"
+            >難易度 <i class="fas fa-award"></i
+          ></label>
+          <input
+            class="dropdown-sub"
+            type="checkbox"
+            id="dropdown-sub3"
+            name="dropdown-sub3"
+          />
+          <div class="section-dropdown-sub">
+            <a href="#" onclick="sortColumn(2,1)"
+              >由低到高 <i class="fas fa-chevron-up"></i
+            ></a>
+            <a href="#" onclick="sortColumn(2,0)"
+              >由高到低 <i class="fas fa-chevron-down"></i
+            ></a>
+          </div>
+          <label class="for-dropdown-sub" for="dropdown-sub4"
+            >實作度 <i class="fas fa-hammer"></i
+          ></label>
+          <input
+            class="dropdown-sub"
+            type="checkbox"
+            id="dropdown-sub4"
+            name="dropdown-sub4"
+          />
+          <div class="section-dropdown-sub">
+            <a href="#" onclick="sortColumn(3,1)"
+              >由低到高 <i class="fas fa-chevron-up"></i
+            ></a>
+            <a href="#" onclick="sortColumn(3,0)"
+              >由高到低 <i class="fas fa-chevron-down"></i
+            ></a>
+          </div>
+          <label class="for-dropdown-sub" for="dropdown-sub5"
+            >理論度 <i class="fas fa-book"></i
+          ></label>
+          <input
+            class="dropdown-sub"
+            type="checkbox"
+            id="dropdown-sub5"
+            name="dropdown-sub5"
+          />
+          <div class="section-dropdown-sub">
+            <a href="#" onclick="sortColumn(4,1)"
+              >由低到高 <i class="fas fa-chevron-up"></i
+            ></a>
+            <a href="#" onclick="sortColumn(4,0)"
+              >由高到低 <i class="fas fa-chevron-down"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="bar">
+        <div class="chart">
+          <div class="name">說故事魔法工作坊</div>
+          <div class="taggroup">
+            <div class="tag">校基本</div>
+            <div class="tag">博雅通識</div>
+            <div class="tag">設計藝術</div>
+          </div>
+          <div class="group">
+            <div class="class-intro button">
+              <div class="text">課程大綱</div>
+            </div>
+            <div class="class-intro button">
+              <div class="text">說故事</div>
+            </div>
+          </div>
+        </div>
+        <div class="illustrator">
+          <canvas id="myChart0"></canvas>
+        </div>
+      </div>
+      <div class="bar">
+        <div class="chart">
+          <div class="name">說故事魔法工作坊</div>
+          <div class="taggroup">
+            <div class="tag">校基本</div>
+            <div class="tag">博雅通識</div>
+            <div class="tag">設計藝術</div>
+          </div>
+          <div class="group">
+            <div class="class-intro button">
+              <div class="text">課程大綱</div>
+            </div>
+            <div class="class-intro button">
+              <div class="text">說故事</div>
+            </div>
+          </div>
+        </div>
+        <div class="illustrator">
+          <canvas id="myChart1"></canvas>
+        </div>
+      </div> -->
+    </div>
+  </body>
+  <script>
+    const labels = ["實用性", "跨域力", "難易度", "實作度", "理論度"];
+    var classDatas;
+    let RadarCharts = [];
+    // const data = {
+    //   labels: labels,
+    //   datasets: [{
+    //     // label: '數值',
+    //     backgroundColor: 'rgba(255, 99, 132,.1)',
+    //     borderColor: 'rgb(255, 99, 132)',
+    // 		borderWidth:2.5,
+    //     data: [2,5,3,4,2]
+    //   }]
+    // };
+    //  const data2 = {
+    //   labels: labels,
+    //   datasets: [{
+    //     // label: '數值',
+    //     backgroundColor: 'rgba(255, 99, 132,.1)',
+    //     borderColor: 'rgb(255, 99, 132)',
+    // 		borderWidth:2.5,
+    //     data: [1,2,4,4,3]
+    //   }]
+    // };
+    fetch("localdata.json", {})
+      .then((response) => response.json())
+      .then((jsonData) => {
+        classDatas = jsonData;
+        GenerateBarStrucure(classDatas);
+      })
+      .catch((err) => {
+        console.log("錯誤:", err);
+      });
+    function GenerateBarStrucure(RawData) {
+      let len = classDatas.length;
+      for (let i = 0; i < len; i++) {
+        let newBar = document.createElement("div");
+        newBar.className = "bar";
+        // newBar.innerHTML =
+        //   '<div class="chart"><div class="name">說故事魔法工作坊</div><div class="taggroup"></div><div class="group"><div class="class-intro button"><div class="text">課程大綱</div></div><div class="class-intro button"><div class="text">說故事</div></div></div></div><div class="illustrator"><canvas id="myChart' +
+        //   i +
+        //   '"></canvas></div>';
+        newBar.innerHTML =
+          '<div class="chart"><div class="name">說故事魔法工作坊</div><div class="taggroup"></div><div class="card-footer"><div class="stats"><div class="stat"><span class="label">學分數</span><span class="value">2</span></div><div class="stat"><span class="label">類別</span><span class="value">Ｃ</span></div><div class="stat"><span class="label">時段</span><span class="value">W34</span></div></div></div><div class="group"><div class="class-intro button"><div class="text">課程大綱</div></div><div class="class-intro button"><div class="text">說故事</div></div></div></div><div class="illustrator"><canvas id="myChart' +
+          i +
+          '"></canvas></div>';
+        document.body.appendChild(newBar);
+        classDatas[i].display = 1;
+      }
+      SetBarValue(RawData, len);
+      console.log(classDatas);
+    }
+    function SetBarValue(RawData, len) {
+      const card_footer = document.getElementsByClassName("card-footer");
+      const classname = document.getElementsByClassName("name");
+      const taggroup = document.getElementsByClassName("taggroup");
+      for (let i = 0; i < len; i++) {
+        classname[i].innerHTML = classDatas[i]["classname"];
+        cardvalues = card_footer[i].getElementsByClassName("value");
+        cardvalues[0].innerText = classDatas[i]["credit"];
+        cardvalues[1].innerText = classDatas[i]["classify"];
+        cardvalues[2].innerText = classDatas[i]["time"];
+        const tags = classDatas[i]["tag"].split(",");
+        let tagscontant = "";
+        for (let j = 0; j < tags.length; j++) {
+          tagscontant += '<div class="tag">' + tags[j] + "</div>";
+        }
+        taggroup[i].innerHTML = tagscontant;
+        const words = classDatas[i]["value"].split(",");
+        DrawLadarGraph(labels, words, i);
+      }
+    }
+    // Using Chart Js to draw Radar Graph
+    function DrawLadarGraph(labels, words, index) {
+      const data = {
+        labels: labels,
+        datasets: [
+          {
+            // label: '數值',
+            backgroundColor: "rgba(255, 99, 132,.1)",
+            borderColor: "rgb(255, 99, 132)",
+            borderWidth: 3,
+            data: words,
+          },
+        ],
+      };
+      const config = {
+        type: "radar",
+        data: data,
+        options: {
+          plugins: {
+            legend: {
+              display: false,
+            },
+          },
+          animations: {
+            tension: {
+              duration: 1000,
+              easing: "linear",
+              from: 0.2,
+              to: 0,
+              loop: true,
+            },
+          },
+          scales: {
+            r: {
+              suggestedMin: 0,
+              suggestedMax: 5,
+              backgroundColor: "rgb(226, 225, 224)",
+              angleLines: {
+                color: "rgba(111, 111, 111,.5)",
+              },
+              ticks: {
+                backdropColor: "rgba(226, 225, 224,0)",
+                padding: 10,
+                z: 10,
+                font: {
+                  size: 18,
+                },
+              },
+              pointLabels: {
+                font: {
+                  size: 16,
+                  weight: 700,
+                },
+              },
+            },
+          },
+        },
+      };
+      Chart.defaults.font.family = "微軟正黑體";
+      Chart.defaults.font.size = 18;
+      // the following line was temporary neglected,it is important bug need to be fixed
+      // Chart.defaults.global.legend.display = false;
+      const myChart = new Chart(
+        document.getElementById("myChart" + index),
+        config
+      );
+      RadarCharts.push(myChart);
+    }
+    function SearchFunction() {
+      console.log(classDatas);
+      var input, filter, ul, li, a, i, txtValue;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      let bar = document.getElementsByClassName("bar");
+      let classname = document.getElementsByClassName("name");
+      let group = document.getElementsByClassName("taggroup");
+      for (i = 0; i < bar.length; i++) {
+        let str = "";
+        tags = group[i].getElementsByClassName("tag");
+        for (let j = 0; j < tags.length; j++) {
+          str += tags[j].innerText;
+        }
+        str += classname[i].innerText;
+        if (str.toUpperCase().indexOf(filter) > -1) {
+          classDatas[i].display = 1;
+          bar[i].style.display = "";
+        } else {
+          classDatas[i].display = 0;
+          bar[i].style.display = "none";
+        }
+      }
+    }
+    function sortColumn(col, asc) {
+      classDatas = classDatas.sort((class1, class2) => {
+        return asc
+          ? class1["value"][2 * col] - class2["value"][2 * col]
+          : class2["value"][2 * col] - class1["value"][2 * col];
+      });
+      console.log(classDatas);
+      rerender();
+    }
+    function rerender() {
+      const card_footer = document.getElementsByClassName("card-footer");
+      let tags = document.getElementsByClassName("tag");
+      console.log(tags);
+      while (tags.length > 0) {
+        tags[0].parentNode.removeChild(tags[0]);
+      }
+      let bar = document.getElementsByClassName("bar");
+      let classname = document.getElementsByClassName("name");
+      let group = document.getElementsByClassName("taggroup");
+      for (let i = 0; i < classDatas.length; i++) {
+        cardvalues = card_footer[i].getElementsByClassName("value");
+        cardvalues[0].innerText = classDatas[i]["credit"];
+        cardvalues[1].innerText = classDatas[i]["classify"];
+        cardvalues[2].innerText = classDatas[i]["time"];
+        if (classDatas[i].display == 0) {
+          bar[i].style.display = "none";
+        } else {
+          bar[i].style.display = "";
+        }
+        classname[i].innerHTML = classDatas[i]["classname"];
+        const tags = classDatas[i]["tag"].split(",");
+        let tagscontant = "";
+        for (let j = 0; j < tags.length; j++) {
+          tagscontant += '<div class="tag">' + tags[j] + "</div>";
+        }
+        group[i].innerHTML = tagscontant;
+        const words = classDatas[i]["value"].split(",");
+        // DrawLadarGraph(labels, words, i);
+        ModifyRadarValue(words, i);
+      }
+    }
+    function ModifyRadarValue(words, index) {
+      for (let i = 0; i < words.length; i++) {
+        RadarCharts[index].data.datasets[0].data[i] = words[i];
+      }
+      RadarCharts[index].update();
+    }
+    window.onload = SearchFunction;
+
+    // const myJSON = '[{"id":[1,2,3,4,5]},{"id":[4,2,3,4,2]}]';
+    // let loc = JSON.parse(fs.readFileSync("./localdata.json"));
+
+    // const loc = require("localdata.json");
+  </script>
+</html>
