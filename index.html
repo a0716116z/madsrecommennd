@@ -36,7 +36,6 @@
         box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
           rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
       }
-
       .chart {
         padding: 40px;
         /* background: rgb(247, 226, 226); */
@@ -61,38 +60,35 @@
         left: 20px;
         bottom: 10%;
       }
-
       .button {
         float: left;
         margin: 0 8px;
         font-size: 18px;
         font-weight: 500;
         letter-spacing: 1px;
-        padding: 13px 20px 13px;
+        /* padding: 13px 20px 13px; */
         outline: 0;
-        border: 1px solid black;
+        border: 2px solid rgba(255, 99, 132, 0.7);
         cursor: pointer;
         position: relative;
-        background-color: rgba(0, 0, 0, 0);
+        background-color: transparent;
         user-select: none;
-        z-index: 2;
+        overflow: hidden;
+        /* z-index: 2; */
         -webkit-user-select: none;
         touch-action: manipulation;
+        transition: 0.3s;
+        box-shadow: 0.3em 0.3em 0 0 rgba(255, 99, 132, 0.3),
+          inset 0.3em 0.3em 0 0 rgba(255, 99, 132, 0.3);
+      }
+      .button:hover,
+      .button:focus {
+        color: #f7f7f7;
+        box-shadow: 0 0 0 0 rgba(255, 99, 132, 0.7),
+          inset 6em 3.5em 0 0 rgba(255, 99, 132, 0.7);
       }
       .text {
-        z-index: 10;
-      }
-
-      .button:after {
-        content: "";
-        background-color: rgba(255, 99, 132, 0.2);
-        width: 100%;
-        z-index: 1;
-        position: absolute;
-        height: 100%;
-        top: 7px;
-        left: 7px;
-        transition: 0.2s;
+        padding: 13px 20px 13px;
       }
       .tag {
         display: inline-block;
@@ -144,8 +140,59 @@
         font-size: 20px;
         margin-top: 5px;
       }
-      .button {
+      /* .button {
         padding: 13px 30px 13px;
+      } */
+      .class-intro a {
+        text-decoration: none;
+        display: block;
+        color: #000;
+      }
+      .class-intro .modal {
+        background-color: white;
+        width: 80%;
+        max-width: 500px;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        margin: 5px;
+        border-radius: 10px;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        transition: 200ms ease-in-out;
+        z-index: 2000;
+      }
+      .class-intro .open-btn {
+        border: none;
+        background: transparent;
+        height: 100%;
+        width: 100%;
+        font-weight: bold;
+        font-size: 18px;
+      }
+      .class-intro .open-btn:hover,
+      .class-intro .open-btn:focus,
+      .class-intro a:hover,
+      .class-intro a:focus {
+        color: #f7f7f7;
+      }
+
+      .class-intro .close-btn {
+        border: none;
+        background-color: rgba(255, 99, 133, 0.95);
+        width: 80%;
+        margin: 10px auto;
+        font-weight: bold;
+        padding: 10px 30px;
+        font-size: 24px;
+        color: white;
+        text-transform: uppercase;
+        letter-spacing: 0.25px;
+      }
+      .class-intro .close-btn .fas {
+        font-size: 28px;
       }
 
       #myInput {
@@ -358,6 +405,13 @@
         color: #282828;
         animation-duration: 1.5s;
       }
+      .modal .fas {
+        background: rgba(255, 99, 133, 0.3);
+        padding: 3px 10px;
+        margin: 2px;
+        font-size: 20px;
+        vertical-align: middle;
+      }
       .noticegroup .open-btn {
         border: none;
         background-color: rgb(167, 218, 169);
@@ -369,6 +423,7 @@
         padding: 10px 20px;
         color: white;
       }
+
       .noticegroup .close-btn {
         border: none;
         background-color: rgba(255, 99, 133, 0.95);
@@ -376,14 +431,13 @@
         margin: 10px auto;
         font-weight: bold;
         padding: 10px 30px;
+        font-size: 24px;
         color: white;
         text-transform: uppercase;
+        letter-spacing: 0.25px;
       }
-      .modal .fas {
-        background: rgba(255, 99, 133, 0.3);
-        padding: 3px 10px;
-        margin: 2px;
-        font-size: 20px;
+      .noticegroup .close-btn .fas {
+        font-size: 28px;
       }
       #overlay {
         position: fixed;
@@ -717,19 +771,21 @@
         <p>
           <i class="fas fa-exclamation"></i
           >跨領域申請每學年下半學期開放申請，時間請參照：<br />
-          <i class="fas fa-exclamation"></i>申請條件：跨域學程申請表
-          歷年成績單(正本)、自傳、申請動機，讀書計畫，其他有利申請文件 <br />
-          <i class="fas fa-check"></i>跨域設計： A類 設計實作 B類 講授課程 Ｃ類
-          工作坊<br />
-          總學分28學分（Ａ類至少6，B類8至12，C類 至少4學分） <br />
-          <i class="fas fa-check"></i>說故事與多媒體：A類「基礎概論」、B
-          類「應用專題」、C 類「實 作工作坊」<br />
-          總學分30學分（B類至少6，C類 至少3學分） <br />
+          <i class="fas fa-exclamation"></i>申請條件：跨域學程申請表、
+          歷年成績單(正本)、自傳、申請動機、讀書計畫，其他有利申請文件 <br />
+          <i class="fas fa-check"></i
+          >跨域設計：A類「設計實作」、B類「講授課程」、Ｃ類 「工作坊」<br />
+          總學分28學分（Ａ類至少6，B類8至12，C類至少4學分） <br />
+          <i class="fas fa-check"></i
+          >說故事與多媒體：A類「基礎概論」、B類「應用專題」、C類「實作工作坊」<br />
+          總學分30學分（B類至少6，C類至少3學分） <br />
           <i class="fas fa-check"></i>音樂與藝術
           ：A類「藝術與音樂基礎」、B類「講授與專題課程」、C類「工作坊」<br />
-          總學分28學分（Ａ類基礎必修至少兩門，B類至少5門，C類 至少3門）
+          總學分28學分（Ａ類基礎必修至少2門，B類至少5門，C類至少3門）
         </p>
-        <button data-close-button class="close-btn">Close&times;</button>
+        <button data-close-button class="close-btn">
+          <i class="fas fa-window-close"></i>Close
+        </button>
       </div>
     </div>
   </body>
@@ -737,6 +793,7 @@
     const labels = ["實用性", "跨域力", "難易度", "實作度", "理論度"];
     var classDatas;
     let RadarCharts = [];
+    var openModalButtons, closeModalButtons;
     fetch("localdata.json", {})
       .then((response) => response.json())
       .then((jsonData) => {
@@ -751,17 +808,37 @@
       for (let i = 0; i < len; i++) {
         let newBar = document.createElement("div");
         newBar.className = "bar";
-        newBar.innerHTML =
-          '<div class="chart"><div class="name">說故事魔法工作坊</div><div class="taggroup"></div><div class="card-footer"><div class="stats"><div class="stat"><span class="label">學分數</span><span class="value">2</span></div><div class="stat"><span class="label">類別</span><span class="value">Ｃ</span></div><div class="stat"><span class="label">時段</span><span class="value">W34</span></div></div></div><div class="group"><div class="class-intro button"><div class="text">課程大綱</div></div><div class="class-intro button"><div class="text">說故事</div></div></div></div><div class="illustrator"><canvas id="myChart' +
+        newBar.innerHTML = newBar.innerHTML =
+          '<div class="chart"><div class="name">說故事魔法工作坊</div><div class="taggroup"></div><div class="card-footer"><div class="stats"><div class="stat"><span class="label">學分數</span><span class="value">2</span></div><div class="stat"><span class="label">類別</span><span class="value">Ｃ</span></div><div class="stat"><span class="label">時段</span><span class="value">W34</span></div></div></div><div class="group"><div class="class-intro button"><a href="https://google.com" target="_blank" class="text">課程大綱</a></div><div class="class-intro button"><button class="open-btn text" data-modal-target="#modal' +
+          i +
+          '">課程簡介</button><div class="modal" id="modal' +
+          i +
+          '"><h2>課程簡介:</h2><hr /><p>Hello</p><button data-close-button class="close-btn"><i class="fas fa-window-close"></i>Close</button></div></div></div></div><div class="illustrator"><canvas id="myChart' +
           i +
           '"></canvas></div>';
         document.body.appendChild(newBar);
         classDatas[i].display = 1;
       }
       SetBarValue(RawData, len);
+      openModalButtons = document.querySelectorAll("[data-modal-target]");
+      closeModalButtons = document.querySelectorAll("[data-close-button]");
+      openModalButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          // console.log(button.dataset.modalTarget);
+          const modal = document.querySelector(button.dataset.modalTarget);
+          openModal(modal);
+        });
+      });
+      closeModalButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const modal = button.closest(".modal");
+          closeModal(modal);
+        });
+      });
       console.log(classDatas);
     }
     function SetBarValue(RawData, len) {
+      let bar = document.getElementsByClassName("bar");
       const card_footer = document.getElementsByClassName("card-footer");
       const classname = document.getElementsByClassName("name");
       const taggroup = document.getElementsByClassName("taggroup");
@@ -771,6 +848,10 @@
         cardvalues[0].innerText = classDatas[i]["credit"];
         cardvalues[1].innerText = classDatas[i]["classify"];
         cardvalues[2].innerText = classDatas[i]["time"];
+        intro = bar[i].querySelector("p");
+        intro.innerText = classDatas[i]["intro"];
+        link = bar[i].querySelector("a");
+        link.href = classDatas[i]["url"];
         const tags = classDatas[i]["tag"].split(",");
         let tagscontant = "";
         for (let j = 0; j < tags.length; j++) {
@@ -897,6 +978,8 @@
         cardvalues[0].innerText = classDatas[i]["credit"];
         cardvalues[1].innerText = classDatas[i]["classify"];
         cardvalues[2].innerText = classDatas[i]["time"];
+        intro = bar[i].querySelector("p");
+        intro.innerText = classDatas[i]["intro"];
         if (classDatas[i].display == 0) {
           bar[i].style.display = "none";
         } else {
@@ -920,7 +1003,7 @@
       }
       RadarCharts[index].update();
     }
-    window.onload = SearchFunction;
+
     const toTop = document.querySelector(".totop");
     window.addEventListener("scroll", () => {
       if (window.pageYOffset > 100) {
@@ -929,28 +1012,14 @@
         toTop.classList.remove("active");
       }
     });
-    const openModalButtons = document.querySelectorAll("[data-modal-target]");
-    const closeModalButtons = document.querySelectorAll("[data-close-button]");
     const overlay = document.getElementById("overlay");
-    openModalButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        // console.log(button.datasets.modalTarget);
-        const modal = document.querySelector(button.dataset.modalTarget);
-        openModal(modal);
-      });
-    });
-    closeModalButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        const modal = button.closest(".modal");
-        closeModal(modal);
-      });
-    });
     overlay.addEventListener("click", () => {
       modals = document.querySelectorAll(".modal.active");
       modals.forEach((modal) => {
         closeModal(modal);
       });
     });
+
     function openModal(modal) {
       if (modal == null) return;
       modal.classList.add("active");
@@ -961,6 +1030,9 @@
       modal.classList.remove("active");
       overlay.classList.remove("active");
     }
+    window.onload = function () {
+      SearchFunction();
+    };
     // const myJSON = '[{"id":[1,2,3,4,5]},{"id":[4,2,3,4,2]}]';
     // let loc = JSON.parse(fs.readFileSync("./localdata.json"));
 

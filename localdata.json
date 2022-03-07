@@ -3,36 +3,40 @@
   "classname": "科技藝術導論",
   "tag": "設計,人文,導論",
   "value": "3,3,3,3,3",
-  "url": "google.com",
+  "url": "https:\/\/google.com",
   "credit": 2,
   "classify": "A",
-  "time": "T34"
+  "time": "T34",
+  "intro": "上切版班之前，我才剛結束了 JS 作品實戰班，第一次透過這種方式學習新技術，一切都很新鮮，真的學到東西，心情很雀躍。切版相關的知識除了有買一些線上課程，其他大部分是自學，網頁的領域變化又非常的快，常常都是需要什麼找什麼，沒有把知識整個融會貫通，看了切版班的課程大綱，最想要學的是管理 SCSS 檔 、把 SCSS 模組化，也想學 Gulp 加速開發，所以索性就報名惹。"
  },
  {
   "classname": "資訊技術導論",
   "tag": "說故事",
   "value": "2,4,1,5,2",
-  "url": "facebook.com",
+  "url": "https:\/\/facebook.com",
   "credit": 3,
   "classify": "A",
-  "time": "M567"
+  "time": "M567",
+  "intro": "因為自己不是零基礎..吧(自以為)，所以前面三周的課程都還算有跟上，到第四周開始要把網頁 Layout 拆分，手刻 RWD，並試著用 Gulp + SCSS 開發，才發現自己的基礎都假的~，原來業界是這樣拆分檔案的嗎？那之前寫的都是什麼垃圾扣 (code) 呀我。"
  },
  {
   "classname": "說故事魔法工作坊",
   "tag": "音樂藝術,影片製作",
   "value": "2,2,3,4,3",
-  "url": "twitter.com",
+  "url": "https:\/\/twitter.com",
   "credit": 2,
   "classify": "C",
-  "time": "R12"
+  "time": "R12",
+  "intro": "在六角買的 Bootsrap 課程也一直還沒有看完 (掩面)，切版班的課程會帶我們看 Bootsrap 4 SCSS 的架構，解釋 components 和 utilities 的區別，講解 BS4 的格線系統怎麼快速建構 RWD 版面，怎麼客製化自己的樣式...。"
  },
  {
   "classname": "體育籃球（乙）",
   "tag": "運動",
   "value": "4,4,1,5,3",
-  "url": "yahoo.com",
+  "url": "https:\/\/yahoo.com",
   "credit": 2,
   "classify": "A",
-  "time": "F34"
+  "time": "F34",
+  "intro": "很多精隨可能都要在實戰練習中才能快速成長，但學到的觀念才是打通任督二脈的關鍵，謝謝老師跟龐大的助教群為我們耐心改 code，但最終作業整個要難產了，最近工作都狂加班，希望至少在期限內能交出 LV1 。"
  }
 ]
