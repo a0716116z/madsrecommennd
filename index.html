@@ -276,15 +276,6 @@
         justify-content: space-around;
         padding: 0;
       }
-      @media (max-width: 1360px) and (min-width: 780px) {
-        .bar {
-          width: 80%;
-          height: 400px;
-        }
-        .searchgroup {
-          width: 80%;
-        }
-      }
       .totop {
         position: fixed;
         bottom: 30px;
@@ -308,6 +299,120 @@
       }
       .totop.active {
         opacity: 1;
+      }
+      .noticegroup {
+        /* background-color: #282828; */
+        /* width: 50%; */
+        padding: 0 25%;
+        display: block;
+        margin: 0px auto 0px;
+      }
+      .modal {
+        background-color: white;
+        width: 80%;
+        max-width: 500px;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        margin: 5px;
+        border-radius: 10px;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        transition: 200ms ease-in-out;
+        z-index: 2000;
+      }
+      .modal.active {
+        transform: translate(-50%, -50%) scale(1);
+      }
+      .modal h1,
+      .modal h2,
+      .modal h3,
+      .modal h4,
+      .modal h5 {
+        margin: 0px;
+        padding: 0px 0px 15px 0px;
+        font-family: "Noto Sans KR", sans-serif;
+        font-size: 30px;
+        color: #282828;
+      }
+      .modal hr {
+        display: block;
+        border: none;
+        height: 3px;
+        background-color: rgba(255, 99, 133, 0.95);
+        margin: 0px;
+        transition-timing-function: cubic-bezier(0.795, 0, 0.165, 1);
+        /* custom */
+      }
+      .modal p {
+        margin: 15px 0px 0px 0px;
+        font-family: "Noto Sans KR", sans-serif;
+        font-weight: 500;
+        letter-spacing: 1px;
+        line-height: 1.6;
+        font-size: 16px;
+        word-break: break-all;
+        word-wrap: pre-wrap;
+        color: #282828;
+        animation-duration: 1.5s;
+      }
+      .noticegroup .open-btn {
+        border: none;
+        background-color: rgb(167, 218, 169);
+        width: 100%;
+        max-width: 300px;
+        margin: 10px auto;
+        font-weight: bold;
+        font-size: 18px;
+        padding: 10px 20px;
+        color: white;
+      }
+      .noticegroup .close-btn {
+        border: none;
+        background-color: rgba(255, 99, 133, 0.95);
+        width: 80%;
+        margin: 10px auto;
+        font-weight: bold;
+        padding: 10px 30px;
+        color: white;
+        text-transform: uppercase;
+      }
+      .modal .fas {
+        background: rgba(255, 99, 133, 0.3);
+        padding: 3px 10px;
+        margin: 2px;
+        font-size: 20px;
+      }
+      #overlay {
+        position: fixed;
+        opacity: 0;
+        transition: 200ms ease-in-out;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.7);
+        pointer-events: none;
+        z-index: 1500;
+      }
+      #overlay.active {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      @media (max-width: 1360px) and (min-width: 780px) {
+        .bar {
+          width: 80%;
+          height: 400px;
+        }
+        .searchgroup {
+          width: 80%;
+        }
+        .noticegroup {
+          padding: 0 10%;
+        }
       }
       @media (max-width: 780px) {
         .searchgroup {
@@ -370,6 +475,9 @@
         .card-footer {
           width: 80%;
           /* margin: auto; */
+        }
+        .noticegroup {
+          padding: 0 2.5%;
         }
       }
     </style>
@@ -598,31 +706,37 @@
         </div>
       </div> -->
     </div>
+    <div id="overlay"></div>
+    <div class="noticegroup">
+      <button class="open-btn" data-modal-target="#modal">
+        <i class="fas fa-exclamation"></i>使用細節與注意事項
+      </button>
+      <div class="modal" id="modal">
+        <h2>使用細節與注意事項</h2>
+        <hr />
+        <p>
+          <i class="fas fa-exclamation"></i
+          >跨領域申請每學年下半學期開放申請，時間請參照：<br />
+          <i class="fas fa-exclamation"></i>申請條件：跨域學程申請表
+          歷年成績單(正本)、自傳、申請動機，讀書計畫，其他有利申請文件 <br />
+          <i class="fas fa-check"></i>跨域設計： A類 設計實作 B類 講授課程 Ｃ類
+          工作坊<br />
+          總學分28學分（Ａ類至少6，B類8至12，C類 至少4學分） <br />
+          <i class="fas fa-check"></i>說故事與多媒體：A類「基礎概論」、B
+          類「應用專題」、C 類「實 作工作坊」<br />
+          總學分30學分（B類至少6，C類 至少3學分） <br />
+          <i class="fas fa-check"></i>音樂與藝術
+          ：A類「藝術與音樂基礎」、B類「講授與專題課程」、C類「工作坊」<br />
+          總學分28學分（Ａ類基礎必修至少兩門，B類至少5門，C類 至少3門）
+        </p>
+        <button data-close-button class="close-btn">Close&times;</button>
+      </div>
+    </div>
   </body>
   <script>
     const labels = ["實用性", "跨域力", "難易度", "實作度", "理論度"];
     var classDatas;
     let RadarCharts = [];
-    // const data = {
-    //   labels: labels,
-    //   datasets: [{
-    //     // label: '數值',
-    //     backgroundColor: 'rgba(255, 99, 132,.1)',
-    //     borderColor: 'rgb(255, 99, 132)',
-    // 		borderWidth:2.5,
-    //     data: [2,5,3,4,2]
-    //   }]
-    // };
-    //  const data2 = {
-    //   labels: labels,
-    //   datasets: [{
-    //     // label: '數值',
-    //     backgroundColor: 'rgba(255, 99, 132,.1)',
-    //     borderColor: 'rgb(255, 99, 132)',
-    // 		borderWidth:2.5,
-    //     data: [1,2,4,4,3]
-    //   }]
-    // };
     fetch("localdata.json", {})
       .then((response) => response.json())
       .then((jsonData) => {
@@ -637,10 +751,6 @@
       for (let i = 0; i < len; i++) {
         let newBar = document.createElement("div");
         newBar.className = "bar";
-        // newBar.innerHTML =
-        //   '<div class="chart"><div class="name">說故事魔法工作坊</div><div class="taggroup"></div><div class="group"><div class="class-intro button"><div class="text">課程大綱</div></div><div class="class-intro button"><div class="text">說故事</div></div></div></div><div class="illustrator"><canvas id="myChart' +
-        //   i +
-        //   '"></canvas></div>';
         newBar.innerHTML =
           '<div class="chart"><div class="name">說故事魔法工作坊</div><div class="taggroup"></div><div class="card-footer"><div class="stats"><div class="stat"><span class="label">學分數</span><span class="value">2</span></div><div class="stat"><span class="label">類別</span><span class="value">Ｃ</span></div><div class="stat"><span class="label">時段</span><span class="value">W34</span></div></div></div><div class="group"><div class="class-intro button"><div class="text">課程大綱</div></div><div class="class-intro button"><div class="text">說故事</div></div></div></div><div class="illustrator"><canvas id="myChart' +
           i +
@@ -819,6 +929,38 @@
         toTop.classList.remove("active");
       }
     });
+    const openModalButtons = document.querySelectorAll("[data-modal-target]");
+    const closeModalButtons = document.querySelectorAll("[data-close-button]");
+    const overlay = document.getElementById("overlay");
+    openModalButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        // console.log(button.datasets.modalTarget);
+        const modal = document.querySelector(button.dataset.modalTarget);
+        openModal(modal);
+      });
+    });
+    closeModalButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const modal = button.closest(".modal");
+        closeModal(modal);
+      });
+    });
+    overlay.addEventListener("click", () => {
+      modals = document.querySelectorAll(".modal.active");
+      modals.forEach((modal) => {
+        closeModal(modal);
+      });
+    });
+    function openModal(modal) {
+      if (modal == null) return;
+      modal.classList.add("active");
+      overlay.classList.add("active");
+    }
+    function closeModal(modal) {
+      if (modal == null) return;
+      modal.classList.remove("active");
+      overlay.classList.remove("active");
+    }
     // const myJSON = '[{"id":[1,2,3,4,5]},{"id":[4,2,3,4,2]}]';
     // let loc = JSON.parse(fs.readFileSync("./localdata.json"));
 
