@@ -29,6 +29,7 @@
         display: flex;
         font-size: 16px;
         height: 400px;
+        transition: 0.7s;
         /* margin: 20px; */
         /* border: 2px solid black; */
         background-color: rgb(226, 225, 224);
@@ -49,6 +50,7 @@
         align-items: center;
       }
       .name {
+        transition: 0.3s;
         font-weight: 800;
         font-size: 36px;
         text-align: center;
@@ -61,6 +63,7 @@
         bottom: 10%;
       }
       .button {
+        transition: 0.3s;
         float: left;
         margin: 0 8px;
         font-size: 18px;
@@ -91,6 +94,7 @@
         padding: 13px 20px 13px;
       }
       .tag {
+        transition: 0.3s;
         display: inline-block;
         background: rgb(167, 218, 169);
         padding: 2px;
@@ -216,7 +220,7 @@
       .cover {
         width: 40%;
         max-width: 600px;
-        margin: 20px 20px 20px 0px;
+        margin: 20px 20px 20px 10px;
         display: inline-block;
         padding: 6px 10px;
         background-color: #ebebeb;
@@ -320,7 +324,7 @@
         margin: auto;
         display: flex;
         align-items: center;
-        justify-content: space-around;
+        justify-content: flex-start;
         padding: 0;
       }
       .totop {
@@ -1012,13 +1016,24 @@
       }
     }
     function sortColumn(col, asc) {
+      closecheckbox();
       classDatas = classDatas.sort((class1, class2) => {
         return asc
           ? class1["value"][2 * col] - class2["value"][2 * col]
           : class2["value"][2 * col] - class1["value"][2 * col];
       });
-      console.log(classDatas);
+      // console.log(classDatas);
       rerender();
+    }
+    function closecheckbox() {
+      checkboxs = document.querySelectorAll(".dropdown-sub");
+      // console.log("length", checkboxs.length);
+      checkboxs.forEach((box) => {
+        box.checked = false;
+        // console.log(box.checked);
+      });
+      document.querySelector(".dropdown").checked = false;
+      // console.log(document.querySelector(".dropdown").checked);
     }
     function rerender() {
       const card_footer = document.getElementsByClassName("card-footer");
