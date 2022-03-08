@@ -347,8 +347,7 @@
       .totop.active {
         opacity: 1;
       }
-      .noticegroup,
-      .dividegroup {
+      .noticegroup {
         /* background-color: #282828; */
         /* width: 50%; */
         padding: 0 25%;
@@ -456,23 +455,7 @@
         opacity: 1;
         pointer-events: all;
       }
-      .fill.active {
-        color: #f7f7f7;
-        box-shadow: 0 0.5em 0.5em -0.4em rgba(255, 99, 133, 1),
-          inset 0 0 0 2em rgba(255, 99, 133, 1);
-        transform: translateY(-0.25em);
-      }
-      .fill {
-        color: rgba(255, 99, 133, 0.75);
-        transition: 0.5s;
-        /* background: rgba(240, 239, 239, 0.911); */
-        background: transparent;
-        border: 2px solid rgba(255, 99, 133, 0.75);
-        font: inherit;
-        line-height: 1;
-        margin: 0.5em;
-        padding: 1em 2em;
-      }
+
       @media (max-width: 1360px) and (min-width: 780px) {
         .bar {
           width: 80%;
@@ -481,17 +464,11 @@
         .searchgroup {
           width: 80%;
         }
-        .noticegroup,
-        .dividegroup {
+        .noticegroup {
           padding: 0 10%;
         }
       }
       @media (max-width: 780px) {
-        .fill {
-          margin: 0.2em;
-          padding: 0.5em 1em;
-          font-size: 16px;
-        }
         .searchgroup {
           width: 95%;
           display: block;
@@ -553,8 +530,7 @@
           width: 80%;
           /* margin: auto; */
         }
-        .noticegroup,
-        .dividegroup {
+        .noticegroup {
           padding: 0 2.5%;
         }
       }
@@ -812,15 +788,9 @@
         </button>
       </div>
     </div>
-    <div class="dividegroup">
-      <button class="fill active" data-modal-value="1">說故事與多媒體</button>
-      <button class="fill active" data-modal-value="2">跨領域設計</button>
-      <button class="fill active" data-modal-value="3">音樂與藝術</button>
-    </div>
   </body>
   <script>
     const labels = ["實用性", "跨域力", "難易度", "實作度", "理論度"];
-    const classifyset = new Set();
     var classDatas;
     let RadarCharts = [];
     var openModalButtons, closeModalButtons;
@@ -867,24 +837,12 @@
       });
       console.log(classDatas);
     }
-    function checkSetInteraction(index) {
-      for (const setValue of classDatas[index]["divide"]) {
-        if (classifyset.has(setValue)) {
-          return true;
-        }
-      }
-      return false;
-    }
     function SetBarValue(RawData, len) {
-      classifyset.add("1");
-      classifyset.add("2");
-      classifyset.add("3");
       let bar = document.getElementsByClassName("bar");
       const card_footer = document.getElementsByClassName("card-footer");
       const classname = document.getElementsByClassName("name");
       const taggroup = document.getElementsByClassName("taggroup");
       for (let i = 0; i < len; i++) {
-        setClassIndex(i);
         classname[i].innerHTML = classDatas[i]["classname"];
         cardvalues = card_footer[i].getElementsByClassName("value");
         cardvalues[0].innerText = classDatas[i]["credit"];
@@ -902,21 +860,6 @@
         taggroup[i].innerHTML = tagscontant;
         const words = classDatas[i]["value"].split(",");
         DrawLadarGraph(labels, words, i);
-      }
-    }
-    function setClassIndex(index) {
-      classDatas[index].divide = new Set();
-      if (classDatas[index]["tag"].includes("說故事")) {
-        classDatas[index]["divide"].add("1");
-      }
-      if (classDatas[index]["tag"].includes("設計")) {
-        classDatas[index]["divide"].add("2");
-      }
-      if (
-        classDatas[index]["tag"].includes("音樂") ||
-        classDatas[index]["tag"].includes("藝術")
-      ) {
-        classDatas[index]["divide"].add("3");
       }
     }
     // Using Chart Js to draw Radar Graph
@@ -1002,7 +945,7 @@
           str += tags[j].innerText;
         }
         str += classname[i].innerText;
-        if (str.toUpperCase().indexOf(filter) > -1 && checkSetInteraction(i)) {
+        if (str.toUpperCase().indexOf(filter) > -1) {
           classDatas[i].display = 1;
           bar[i].style.display = "";
         } else {
@@ -1038,7 +981,7 @@
         intro = bar[i].querySelector("p");
         intro.innerText = classDatas[i]["intro"];
         link.href = classDatas[i]["url"];
-        if (classDatas[i].display == 0 || !checkSetInteraction(i)) {
+        if (classDatas[i].display == 0) {
           bar[i].style.display = "none";
         } else {
           bar[i].style.display = "";
@@ -1095,24 +1038,5 @@
     // let loc = JSON.parse(fs.readFileSync("./localdata.json"));
 
     // const loc = require("localdata.json");
-    let valueButtons = document.querySelectorAll("[data-modal-value]");
-    valueButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        const modal = button.dataset.modalValue;
-        dataModal(button, modal);
-        console.log(classifyset);
-        rerender();
-      });
-    });
-    function dataModal(button, value) {
-      if (button == null) return;
-      if (button.classList.contains("active")) {
-        button.classList.remove("active");
-        classifyset.delete(value);
-      } else {
-        button.classList.add("active");
-        classifyset.add(value);
-      }
-    }
   </script>
 </html>
