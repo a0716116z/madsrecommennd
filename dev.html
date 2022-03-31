@@ -1090,7 +1090,7 @@
       console.log(classDatas);
       var input, filter, ul, li, a, i, txtValue;
       input = document.getElementById("myInput");
-      filter = input.value.toUpperCase();
+      filter = input.value.toUpperCase().replace(/\s+/g, "");
       let bar = document.getElementsByClassName("bar");
       let classname = document.getElementsByClassName("name");
       let group = document.getElementsByClassName("taggroup");
@@ -1101,6 +1101,12 @@
           str += tags[j].innerText;
         }
         str += classname[i].innerText;
+        // if (str.toUpperCase().indexOf(filter) > -1) {
+        //   classDatas[i].display = 1;
+        // } else {
+        //   classDatas[i].display = 0;
+        // }
+        // rerender();
         if (
           str.toUpperCase().indexOf(filter) > -1 &&
           checkSetInteraction(i) &&
@@ -1109,7 +1115,11 @@
           classDatas[i].display = 1;
           bar[i].style.display = "";
         } else {
-          classDatas[i].display = 0;
+          if (str.toUpperCase().indexOf(filter) <= -1) {
+            classDatas[i].display = 0;
+          } else {
+            classDatas[i].display = 1;
+          }
           bar[i].style.display = "none";
         }
       }
@@ -1237,7 +1247,8 @@
       button.addEventListener("click", () => {
         const modal = button.dataset.classValue;
         classifyModal(button, modal);
-        // console.log(classifyset);
+
+        console.log(groupset);
         rerender();
       });
     });
