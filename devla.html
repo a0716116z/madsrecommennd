@@ -1,0 +1,1581 @@
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale = 1, user-scalable = no" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="text/javascript" src="localdata.json"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link rel="stylesheet" href="./iconstyle.css" />
+    <style>
+      :root {
+        --decX: 50vw;
+        --decY: -50vh;
+        --classchoose: "0";
+      }
+      * {
+        font-family: "微軟正黑體", serif;
+        box-sizing: border-box;
+        scroll-behavior: smooth;
+      }
+      body {
+        background: #333333;
+        overflow-x: hidden;
+        background-image: url("./lines.png");
+        background-position: center;
+        background-repeat: repeat;
+        background-size: 4%;
+      }
+      .bar {
+        position: relative;
+        width: 50%;
+        margin: 20px auto;
+        display: flex;
+        font-size: 16px;
+        height: 400px;
+        transition: 0.7s;
+        /* margin: 20px; */
+        /* border: 2px solid black; */
+        background-color: rgb(226, 225, 224);
+        /* z-index: -2; */
+        box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
+          rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+      }
+      .chart {
+        padding: 40px;
+        /* background: rgb(247, 226, 226); */
+        position: relative;
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .name {
+        transition: 0.3s;
+        font-weight: 800;
+        font-size: 36px;
+        text-align: center;
+        letter-spacing: 1px;
+        line-height: 1.5;
+      }
+      .group {
+        position: absolute;
+        /* left: 20px; */
+        bottom: 10%;
+        width: 100%;
+        padding: 10px;
+        display: flex;
+        justify-content: space-around;
+      }
+      .button {
+        transition: 0.3s;
+        /* float: left; */
+        display: inline-block;
+        /* margin: 0 8px; */
+        font-size: 18px;
+        font-weight: 500;
+        letter-spacing: 1px;
+        /* padding: 13px 20px 13px; */
+        outline: 0;
+        border: 2px solid rgba(255, 99, 132, 0.7);
+        cursor: pointer;
+        position: relative;
+        background-color: transparent;
+        user-select: none;
+        overflow: hidden;
+        /* z-index: 2; */
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        transition: 0.3s;
+        box-shadow: 0.3em 0.3em 0 0 rgba(255, 99, 132, 0.3),
+          inset 0.3em 0.3em 0 0 rgba(255, 99, 132, 0.3);
+      }
+      .button:hover,
+      .button:focus {
+        color: #f7f7f7;
+        box-shadow: 0 0 0 0 rgba(255, 99, 132, 0.7),
+          inset 6em 3.5em 0 0 rgba(255, 99, 132, 0.7);
+      }
+      .text {
+        padding: 13px 20px 13px;
+      }
+      .tag {
+        transition: 0.3s;
+        display: inline-block;
+        background: rgb(167, 218, 169);
+        padding: 2px;
+        line-height: 1.2;
+        letter-spacing: 0.7px;
+        margin: 0px 2px;
+      }
+
+      .button:hover:after {
+        top: 0px;
+        left: 0px;
+      }
+      .illustrator {
+        height: 400px;
+        width: 400px;
+        /* background: #000; */
+      }
+      .card-footer {
+        /*position:fixed; /* Full card width/height */
+        /* position: absolute;  */
+        margin: 30px auto;
+        width: 100%;
+        bottom: 20px;
+      }
+      .stat {
+        box-sizing: border-box;
+        width: calc(100% / 3);
+        float: left;
+        text-align: center;
+        border-left: 2px solid #434343;
+      }
+      .stat:first-of-type {
+        border: none;
+      }
+      .stat .label {
+        display: block;
+        text-transform: uppercase;
+        font-weight: 300;
+        font-size: 11px;
+        letter-spacing: 1px;
+        color: #95989a;
+      }
+
+      .stat .value {
+        display: block;
+        font-weight: 700;
+        font-size: 20px;
+        margin-top: 5px;
+      }
+      /* .button {
+        padding: 13px 30px 13px;
+      } */
+      .class-intro a {
+        text-decoration: none;
+        display: block;
+        color: #000;
+      }
+      .class-intro .modal {
+        background-color: white;
+        width: 80%;
+        max-width: 500px;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        margin: 5px;
+        border-radius: 10px;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        transition: 200ms ease-in-out;
+        z-index: 2000;
+      }
+      .class-intro .open-btn {
+        border: none;
+        background: transparent;
+        height: 100%;
+        width: 100%;
+        font-weight: bold;
+        font-size: 18px;
+      }
+      .class-intro .open-btn:hover,
+      .class-intro .open-btn:focus,
+      .class-intro a:hover,
+      .class-intro a:focus {
+        color: #f7f7f7;
+      }
+
+      .class-intro .close-btn {
+        border: none;
+        background-color: rgba(255, 99, 133, 0.95);
+        width: 80%;
+        margin: 10px auto;
+        font-weight: bold;
+        padding: 10px 30px;
+        font-size: 24px;
+        color: white;
+        text-transform: uppercase;
+        letter-spacing: 0.25px;
+      }
+      .class-intro .close-btn .fas {
+        font-size: 28px;
+      }
+
+      #myInput {
+        outline: none;
+        color: rgba(255, 99, 133, 0.624);
+        background-position: 10px 12px;
+        width: 100%;
+        /* max-width: 600px; */
+        /* height: 40px; */
+        font-size: 20px;
+        border: 0px;
+        padding: 5px 10px;
+        /* margin-bottom: 12px; */
+        line-height: 1.2;
+        background-color: transparent;
+      }
+
+      #myInput::placeholder {
+        color: rgba(255, 99, 133, 0.624);
+      }
+      .cover {
+        width: 40%;
+        max-width: 600px;
+        margin: 20px 20px 20px 10px;
+        display: inline-block;
+        padding: 6px 10px;
+        background-color: #ebebeb;
+        border-left: 4px solid rgba(255, 99, 133, 0.95);
+        box-shadow: 0 1px 1px hsl(0deg 0% 0% / 0.075),
+          0 2px 2px hsl(0deg 0% 0% / 0.075), 0 4px 4px hsl(0deg 0% 0% / 0.075),
+          0 8px 8px hsl(0deg 0% 0% / 0.075), 0 16px 16px hsl(0deg 0% 0% / 0.075);
+        /* box-shadow: 0 10px 20px #ebd6e0, 0 0 0 20px #ffffffeb; */
+        /* transform: scale(0.6); */
+      }
+      [type="checkbox"]:checked,
+      [type="checkbox"]:not(:checked) {
+        position: absolute;
+        left: -9999px;
+        opacity: 0;
+        pointer-events: none;
+      }
+      .for-dropdown-sub,
+      .drop-menu a,
+      .for-dropdown {
+        font-size: 19px;
+        color: rgba(255, 99, 133, 0.624);
+        border-left: 4px solid rgba(255, 99, 133, 0.95);
+        border-radius: 0 0 0 0;
+        /* position: relative; */
+        text-decoration: none;
+        z-index: 100;
+        display: inline-block;
+        width: 150px;
+        background: #ecf0f1;
+        padding: 15px 20px;
+        cursor: pointer;
+        transition: all 200ms linear;
+        box-shadow: 0 1px 1px hsl(0deg 0% 0% / 0.075),
+          0 2px 2px hsl(0deg 0% 0% / 0.075), 0 4px 4px hsl(0deg 0% 0% / 0.075),
+          0 8px 8px hsl(0deg 0% 0% / 0.075), 0 16px 16px hsl(0deg 0% 0% / 0.075);
+      }
+      .drop-menu {
+        /* height: 50px; */
+        /* float: right; */
+        /* vertical-align: middle; */
+        width: 30%;
+        z-index: 20;
+        /* background: #223b61; */
+        position: relative;
+        /* background-color: #000; */
+        margin: auto 0 auto 0;
+        /* justify-content: center; */
+        display: inline-block;
+        /* align-items: center; */
+        /* display: flex; */
+      }
+      .section-dropdown,
+      .section-dropdown-sub {
+        visibility: hidden;
+        opacity: 0;
+        z-index: 1;
+        max-height: 0;
+        transition: all 200ms linear;
+      }
+      .section-dropdown-sub {
+        position: relative;
+        top: -20px;
+      }
+      .section-dropdown {
+        position: absolute;
+        z-index: 200;
+        /* top: 400px; */
+        /* top: 200px; */
+        left: 150px;
+      }
+      .dropdown:checked ~ .section-dropdown {
+        visibility: visible;
+        opacity: 1;
+        top: 0;
+        z-index: 2;
+        max-height: 200px;
+      }
+      .dropdown-sub:checked + .section-dropdown-sub {
+        visibility: visible;
+        opacity: 1;
+        top: 0;
+        z-index: 2;
+        max-height: 200px;
+      }
+      .fas,
+      .fa {
+        vertical-align: middle;
+        font-weight: 900;
+        padding: 0 3px;
+        visibility: visible;
+        /* font-size: 24px; */
+        /* color: #5e1351; */
+        /* background-color: aquamarine; */
+      }
+      .searchgroup {
+        /* display: flex; */
+        width: 50%;
+        /* background: #000; */
+        position: relative;
+        margin: auto;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 0;
+      }
+      .totop {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        z-index: 1000;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        background: rgb(255, 255, 255);
+        justify-content: center;
+        color: #333333;
+        font-size: 30px;
+        opacity: 0;
+        transition: 0.2s;
+        box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
+          rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+        text-decoration: none;
+      }
+      .totop.active {
+        opacity: 1;
+      }
+      .noticegroup,
+      .dividegroup {
+        /* background-color: #282828; */
+        /* width: 50%; */
+        padding: 0 25%;
+        display: block;
+        margin: 0px auto 0px;
+      }
+      .noticegroup .modal {
+        background-color: white;
+        width: 80%;
+        max-width: 500px;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        margin: 5px;
+        border-radius: 10px;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        transition: 200ms ease-in-out;
+        z-index: 2000;
+      }
+      .noticegroup .modal.active {
+        transform: translate(-50%, -50%) scale(1);
+      }
+      .open_choose_class .modal,
+      .class-intro .modal {
+        background-color: white;
+        display: flex;
+        position: fixed;
+        flex-direction: column;
+        padding: 20px;
+        margin: 5px;
+        left: 50%;
+        transition: 200ms ease-in-out;
+        z-index: 2000;
+      }
+      .open_choose_class .modal_center,
+      .class-intro .modal_center {
+        width: 80%;
+        margin: 5px;
+        max-width: 500px;
+        border-radius: 10px;
+        top: 50%;
+        transform: translate(-50%, -50%) scale(0);
+      }
+      .open_choose_class .modal_bottom,
+      .class-intro .modal_bottom {
+        background-color: white;
+        width: 100%;
+        max-width: 1920px;
+        height: 90%;
+        max-height: 90vh;
+        /* height: 80vh; */
+        padding: 20px;
+        border-radius: 30px 30px 0 0px;
+        bottom: 0;
+        transform: translate(-50%, 50%) scale(0);
+      }
+      .modal_bottom.active {
+        transform: translate(-50%, -42%) scale(1);
+      }
+      .modal_center.active {
+        transform: translate(-50%, -50%) scale(1);
+      }
+      .modal h1,
+      .modal h2,
+      .modal h3,
+      .modal h4,
+      .modal h5 {
+        margin: 0px;
+        padding: 0px 0px 15px 0px;
+        font-family: "Noto Sans KR", sans-serif;
+        font-size: 30px;
+        color: #282828;
+      }
+      .modal hr {
+        display: block;
+        border: none;
+        height: 3px;
+        background-color: rgba(255, 99, 133, 0.95);
+        margin: 0px;
+        transition-timing-function: cubic-bezier(0.795, 0, 0.165, 1);
+        /* custom */
+      }
+      .modal p {
+        margin: 15px 0px 0px 0px;
+        /* font-family: "Noto Sans KR", sans-serif; */
+        font-weight: 500;
+        letter-spacing: 1px;
+        line-height: 1.6;
+        font-size: 16px;
+        word-break: break-all;
+        word-wrap: pre-wrap;
+        color: #282828;
+        animation-duration: 1.5s;
+        overflow: auto;
+        max-height: 60vh;
+      }
+      .modal .fas {
+        background: rgba(255, 99, 133, 0.3);
+        padding: 3px 10px;
+        margin: 2px;
+        font-size: 20px;
+        vertical-align: middle;
+      }
+      .noticegroup .open-btn {
+        border: none;
+        background-color: rgb(167, 218, 169);
+        width: 100%;
+        max-width: 300px;
+        margin: 10px auto;
+        font-weight: bold;
+        font-size: 18px;
+        padding: 10px 20px;
+        color: white;
+      }
+      .open_choose_class .close-btn,
+      .noticegroup .close-btn {
+        border: none;
+        background-color: rgba(255, 99, 133, 0.95);
+        width: 80%;
+        margin: 10px auto;
+        font-weight: bold;
+        padding: 10px 30px;
+        font-size: 24px;
+        color: white;
+        text-transform: uppercase;
+        letter-spacing: 0.25px;
+      }
+      .open_choose_class .close-btn .fas,
+      .noticegroup .close-btn .fas {
+        font-size: 28px;
+      }
+      #overlay {
+        position: fixed;
+        opacity: 0;
+        transition: 200ms ease-in-out;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.7);
+        pointer-events: none;
+        z-index: 1500;
+      }
+      #overlay.active {
+        opacity: 1;
+        pointer-events: all;
+      }
+      .fill.active {
+        color: #f7f7f7;
+        box-shadow: 0 0.5em 0.5em -0.4em rgba(255, 99, 133, 1),
+          inset 0 0 0 2em rgba(255, 99, 133, 1);
+        transform: translateY(-0.25em);
+      }
+      .fill {
+        color: rgba(255, 99, 133, 0.75);
+        transition: 0.5s;
+        /* background: rgba(240, 239, 239, 0.911); */
+        background: transparent;
+        border: 2px solid rgba(255, 99, 133, 0.75);
+        font: inherit;
+        line-height: 1;
+        margin: 0.5em 1em 0.5em 0em;
+        padding: 1em 2em;
+      }
+      .fill-class.active {
+        color: #f7f7f7;
+        box-shadow: 0 0.5em 0.5em -0.4em rgb(166, 202, 135),
+          inset 0 0 0 2em rgb(166, 202, 135);
+        transform: translateY(-0.25em);
+      }
+      .fill-class {
+        color: rgba(154, 255, 99, 0.75);
+        transition: 0.5s;
+        /* background: rgba(240, 239, 239, 0.911); */
+        background: transparent;
+        border: 2px solid rgba(99, 255, 99, 0.5);
+        font: inherit;
+        line-height: 1;
+        margin: 0.5em 0.5em 0.5em 0em;
+        padding: 0.8em 1.5em;
+      }
+      .check {
+        position: absolute;
+        display: block;
+        left: 5%;
+        top: 5%;
+        border: none;
+        padding: 0;
+        z-index: 10;
+        background: unset;
+        /* background: rgb(125, 124, 124); */
+      }
+      .check .fas:after {
+        position: absolute;
+        display: inline-block;
+        font-style: normal;
+        font-variant: normal;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        content: "\f005";
+        padding: 5px 4px;
+        top: 0;
+        left: 0;
+        font-size: 20px;
+        font-weight: 600;
+        background: rgb(0, 0, 0);
+        color: rgb(222, 220, 220);
+        border-radius: 5px;
+        text-align: center;
+        transition: 0.8s;
+        box-shadow: 2px 3px 8px #b7b7b7, -2px -3px 8px #7e7e7e;
+      }
+
+      .check .fas {
+        font-size: 20px;
+        color: rgb(222, 220, 220);
+        /* border: #000 1px solid; */
+        border-radius: 5px;
+        padding: 5px 4px;
+        background: rgb(0, 0, 0);
+        transition: 0.5s;
+      }
+
+      /* .check .fas.active:before {
+        animation: yAxis 1s alternate forwards
+          cubic-bezier(0.165, 0.84, 0.44, 1);
+      } */
+      .check .fas.checked,
+      .check .fas.checked:not(.active):after {
+        font-size: 22px;
+        color: rgb(255, 213, 0);
+        box-shadow: 0px -6px 10px rgba(255, 255, 255, 1),
+          0px 4px 15px rgba(0, 0, 0, 0.15);
+        background: rgb(97, 97, 97);
+        box-shadow: 0 15px 20px rgba(0, 0, 0, 0.02);
+      }
+      .check .fas.active:after {
+        display: block;
+        background: transparent;
+        color: rgb(255, 213, 0);
+        animation: xAxis 1s forwards cubic-bezier(1, 0.84, 0.64, 0.25);
+        box-shadow: none;
+        /* border: #000 1px solid; */
+      }
+      .choose-class {
+        position: fixed;
+        bottom: 40px;
+        left: 5%;
+        width: 35px;
+        height: 35px;
+        background: rgb(255, 255, 255);
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 5;
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
+          0 10px 10px rgba(0, 0, 0, 0.22);
+      }
+      .choose-class .fas {
+        font-size: 22px;
+        color: rgb(0, 0, 74);
+      }
+      .choose-class:after {
+        content: var(--classchoose);
+        font-size: 12px;
+        font-weight: 600;
+        position: absolute;
+        top: -12px;
+        right: -12px;
+        background: #2bd156;
+        line-height: 24px;
+        padding: 0 5px;
+        height: 20px;
+        min-width: 20px;
+        color: white;
+        text-align: center;
+        border-radius: 24px;
+      }
+      .choose-class.shake {
+        animation: shakeCart 0.4s ease-in-out forwards;
+      }
+
+      .empty-frame {
+        height: 240px;
+        /* border: 1px solid #000; */
+        width: 240px;
+        margin: auto;
+        /* display: flex; */
+        /* justify-content: center; */
+      }
+      .empty {
+        display: block;
+        /* width: 100%; */
+        /* width: 100%; */
+        height: 200px;
+        z-index: 10;
+        background: url("/empty.svg");
+        background-size: cover;
+        opacity: 0.4;
+        transform: scale(0.6);
+        /* background: url('data:image/svg + xml;utf8,<svgversion="1.1"id="Capa_1"x="0px"y="0px"width="462.035px"height="462.035px"viewBox="0 0 462.035 462.035"style="enable-background:new 0 0 462.035 462.035;"xml:space="preserve"><g><pathd="M457.83,158.441c-0.021-0.028-0.033-0.058-0.057-0.087l-50.184-62.48c-0.564-0.701-1.201-1.305-1.879-1.845c-2.16-2.562-5.355-4.225-8.967-4.225H65.292c-3.615,0-6.804,1.661-8.965,4.225c-0.678,0.54-1.316,1.138-1.885,1.845l-50.178,62.48c-0.023,0.029-0.034,0.059-0.057,0.087C1.655,160.602,0,163.787,0,167.39v193.07c0,6.5,5.27,11.771,11.77,11.771h438.496c6.5,0,11.77-5.271,11.77-11.771V167.39C462.037,163.787,460.381,160.602,457.83,158.441z M408.516,134.615l16.873,21.005h-16.873V134.615z M384.975,113.345v42.274H296.84c-2.514,0-4.955,0.805-6.979,2.293l-58.837,43.299l-58.849-43.305c-2.023-1.482-4.466-2.287-6.978-2.287H77.061v-42.274H384.975z M53.523,155.62H36.65l16.873-21.005V155.62z M438.498,348.69H23.54V179.16h137.796l62.711,46.148c4.15,3.046,9.805,3.052,13.954-0.005l62.698-46.144h137.799V348.69L438.498,348.69z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>'); */
+        background-repeat: no-repeat;
+      }
+      .corner {
+        text-align: left;
+        font-size: 20px;
+        font-weight: 700;
+        border: 5px solid #000;
+        line-height: 1.2;
+        display: inline;
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px 0 5px 0;
+        background: #f7f7f7;
+        margin: 10px 3%;
+      }
+      .modal-color {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 10px 0;
+        width: 100%;
+        padding: 10px 0;
+        background-color: rgba(255, 185, 185, 0.585);
+      }
+      #modify-block {
+        overflow: auto;
+        max-height: 50vh;
+      }
+      @keyframes xAxis {
+        100% {
+          transform: translate(var(--decX), var(--decY));
+        }
+      }
+      /* @keyframes yAxis {
+        100% {
+          transform: translateY(var(--decY));
+        }
+      } */
+      @keyframes shakeCart {
+        25% {
+          transform: translateX(6px);
+        }
+        50% {
+          transform: translateX(-4px);
+        }
+        75% {
+          transform: translateX(2px);
+        }
+        100% {
+          transform: translateX(0);
+        }
+      }
+      @media (max-width: 1360px) and (min-width: 780px) {
+        .check {
+          display: inline-block;
+        }
+        .bar {
+          width: 80%;
+          height: 400px;
+        }
+        .searchgroup {
+          width: 80%;
+        }
+        .noticegroup,
+        .dividegroup {
+          padding: 0 10%;
+        }
+      }
+      @media (max-width: 780px) {
+        .check {
+          width: 100%;
+          position: relative;
+          left: 0%;
+          /* left: 5%; */
+          /* background: #fff; */
+          /* background: transparent; */
+          display: inline-block;
+        }
+        .check .fas {
+          position: relative;
+        }
+        .fill {
+          margin: 0.25em 0.15em 0.25em 0em;
+          padding: 0.5em 1em;
+          font-size: 16px;
+        }
+        .searchgroup {
+          width: 95%;
+          display: block;
+          margin: 20px auto 10px;
+          position: relative;
+        }
+
+        .section-dropdown {
+          left: unset;
+          right: 100px;
+        }
+
+        .cover {
+          margin: 0;
+          width: 100%;
+          max-width: 1000px;
+          padding: 10px 5px;
+          font-size: 14px;
+          line-height: 1;
+          display: block;
+          /* background-color: #000; */
+          margin: 20px 0px 10px;
+        }
+        .illustrator {
+          width: 300px;
+          height: 300px;
+        }
+
+        .drop-menu {
+          position: absolute;
+          right: 60px;
+          top: 0;
+          display: block;
+        }
+        .bar {
+          width: 95%;
+          flex-direction: column;
+          padding: 2%;
+          height: auto;
+        }
+        .chart {
+          width: 100%;
+          padding: 0;
+          /* background: #000; */
+        }
+        .group {
+          position: relative;
+          margin-bottom: 20px;
+        }
+        .illustrator {
+          margin: auto;
+          /* background: #000; */
+        }
+        /* .stat {
+          width: calc(80% / 3);
+          background: #000;
+        } */
+        .card-footer {
+          width: 80%;
+          /* margin: auto; */
+        }
+        .noticegroup,
+        .dividegroup {
+          padding: 0 2.5%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a href="#" class="totop">
+      <i class="fas fa-chevron-circle-up"></i>
+    </a>
+    <div class="searchgroup">
+      <section class="intro">
+        <div class="container-fluid">
+          <div class="row">
+            <div id="NameContainer">
+              <svg id="NameSvg" viewbox="0 0 100 50">
+                <text
+                  class="name-tag"
+                  fill="#000"
+                  stroke="#000"
+                  text-anchor="middle"
+                  x="28%"
+                  y="50%"
+                  dy=".35em"
+                >
+                  X'
+                </text>
+                <text
+                  class="name-tag"
+                  fill="#d1c71a"
+                  stroke="#d1c71a"
+                  text-anchor="middle"
+                  x="45%"
+                  y="50%"
+                  dy=".35em"
+                >
+                  M
+                </text>
+                <text
+                  class="name-tag"
+                  fill="#de3812"
+                  stroke="#de3812"
+                  text-anchor="middle"
+                  x="57%"
+                  y="50%"
+                  dy=".35em"
+                >
+                  a
+                </text>
+                <text
+                  class="name-tag"
+                  fill="#fcc623"
+                  stroke="#fcc623"
+                  text-anchor="middle"
+                  x="67%"
+                  y="50%"
+                  dy=".35em"
+                >
+                  d
+                </text>
+                <text
+                  class="name-tag"
+                  fill="#68440a"
+                  stroke="#68440a"
+                  text-anchor="middle"
+                  x="77%"
+                  y="50%"
+                  dy=".35em"
+                >
+                  s
+                </text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="cover">
+        <input
+          type="text"
+          id="myInput"
+          onkeyup="SearchFunction()"
+          placeholder="輸入：課名、學程等關鍵字....."
+          title="輸入檢索資訊"
+        />
+      </div>
+      <!-- <select id="sortList" class="dropdown" onchange="favTutorial()">
+						<option>實用性</option>
+						<option>跨域力</option>
+						<option>難易度</option>
+						<option>實作度</option>
+						<option>理論度</option>
+					</select>
+				</div> -->
+      <div class="drop-menu">
+        <input class="dropdown" type="checkbox" id="dropdown" name="dropdown" />
+        <label class="for-dropdown" for="dropdown"
+          >排序方式<i class="fas fa-bars"></i
+        ></label>
+        <div class="section-dropdown">
+          <label class="for-dropdown-sub" for="dropdown-sub1"
+            >實用性 <i class="fas fa-dollar-sign"></i
+          ></label>
+          <input
+            class="dropdown-sub"
+            type="checkbox"
+            id="dropdown-sub1"
+            name="dropdown-sub1"
+          />
+          <div class="section-dropdown-sub">
+            <a href="#" onclick="sortColumn(0,1)"
+              >由低到高 <i class="fas fa-chevron-up"></i
+            ></a>
+            <a href="#" onclick="sortColumn(0,0)"
+              >由高到低 <i class="fas fa-chevron-down"></i
+            ></a>
+          </div>
+          <label class="for-dropdown-sub" for="dropdown-sub2"
+            >跨域力<i class="fas fa-project-diagram"></i
+          ></label>
+          <input
+            class="dropdown-sub"
+            type="checkbox"
+            id="dropdown-sub2"
+            name="dropdown-sub2"
+          />
+          <div class="section-dropdown-sub">
+            <a href="#" onclick="sortColumn(1,1)"
+              >由低到高 <i class="fas fa-chevron-up"></i
+            ></a>
+            <a href="#" onclick="sortColumn(1,0)"
+              >由高到低 <i class="fas fa-chevron-down"></i
+            ></a>
+          </div>
+          <label class="for-dropdown-sub" for="dropdown-sub3"
+            >難易度 <i class="fas fa-award"></i
+          ></label>
+          <input
+            class="dropdown-sub"
+            type="checkbox"
+            id="dropdown-sub3"
+            name="dropdown-sub3"
+          />
+          <div class="section-dropdown-sub">
+            <a href="#" onclick="sortColumn(2,1)"
+              >由低到高 <i class="fas fa-chevron-up"></i
+            ></a>
+            <a href="#" onclick="sortColumn(2,0)"
+              >由高到低 <i class="fas fa-chevron-down"></i
+            ></a>
+          </div>
+          <label class="for-dropdown-sub" for="dropdown-sub4"
+            >實作度 <i class="fas fa-hammer"></i
+          ></label>
+          <input
+            class="dropdown-sub"
+            type="checkbox"
+            id="dropdown-sub4"
+            name="dropdown-sub4"
+          />
+          <div class="section-dropdown-sub">
+            <a href="#" onclick="sortColumn(3,1)"
+              >由低到高 <i class="fas fa-chevron-up"></i
+            ></a>
+            <a href="#" onclick="sortColumn(3,0)"
+              >由高到低 <i class="fas fa-chevron-down"></i
+            ></a>
+          </div>
+          <label class="for-dropdown-sub" for="dropdown-sub5"
+            >理論度 <i class="fas fa-book"></i
+          ></label>
+          <input
+            class="dropdown-sub"
+            type="checkbox"
+            id="dropdown-sub5"
+            name="dropdown-sub5"
+          />
+          <div class="section-dropdown-sub">
+            <a href="#" onclick="sortColumn(4,1)"
+              >由低到高 <i class="fas fa-chevron-up"></i
+            ></a>
+            <a href="#" onclick="sortColumn(4,0)"
+              >由高到低 <i class="fas fa-chevron-down"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="bar">
+        <div class="chart">
+          <div class="name">說故事魔法工作坊</div>
+          <div class="taggroup">
+            <div class="tag">校基本</div>
+            <div class="tag">博雅通識</div>
+            <div class="tag">設計藝術</div>
+          </div>
+          <div class="group">
+            <div class="class-intro button">
+              <div class="text">課程大綱</div>
+            </div>
+            <div class="class-intro button">
+              <div class="text">說故事</div>
+            </div>
+          </div>
+        </div>
+        <div class="illustrator">
+          <canvas id="myChart0"></canvas>
+        </div>
+      </div>
+      <div class="bar">
+        <div class="chart">
+          <div class="name">說故事魔法工作坊</div>
+          <div class="taggroup">
+            <div class="tag">校基本</div>
+            <div class="tag">博雅通識</div>
+            <div class="tag">設計藝術</div>
+          </div>
+          <div class="group">
+            <div class="class-intro button">
+              <div class="text">課程大綱</div>
+            </div>
+            <div class="class-intro button">
+              <div class="text">說故事</div>
+            </div>
+          </div>
+        </div>
+        <div class="illustrator">
+          <canvas id="myChart1"></canvas>
+        </div>
+      </div> -->
+    </div>
+    <div id="overlay"></div>
+
+    <div class="noticegroup">
+      <button class="open-btn" data-modal-target="#modal">
+        <i class="fas fa-exclamation"></i>使用細節與注意事項
+      </button>
+      <div class="modal" id="modal">
+        <h2>使用細節與注意事項</h2>
+        <hr />
+        <p>
+          <i class="fas fa-exclamation"></i
+          >跨領域申請每學年下半學期開放申請，時間請參照：<br />
+          <i class="fas fa-exclamation"></i>申請條件：跨域學程申請表、
+          歷年成績單(正本)、自傳、申請動機、讀書計畫，其他有利申請文件 <br />
+          <i class="fas fa-check"></i
+          >跨域設計：A類「設計實作」、B類「講授課程」、Ｃ類 「工作坊」<br />
+          總學分28學分（Ａ類至少6，B類8至12，C類至少4學分） <br />
+          <i class="fas fa-check"></i
+          >說故事與多媒體：A類「基礎概論」、B類「應用專題」、C類「實作工作坊」<br />
+          總學分30學分（B類至少6，C類至少3學分） <br />
+          <i class="fas fa-check"></i>音樂與藝術
+          ：A類「藝術與音樂基礎」、B類「講授與專題課程」、C類「工作坊」<br />
+          總學分28學分（Ａ類基礎必修至少2門，B類至少5門，C類至少3門）
+        </p>
+        <button data-close-button class="close-btn">
+          <i class="fas fa-window-close"></i>Close
+        </button>
+      </div>
+    </div>
+    <div class="dividegroup">
+      <!-- <button class="fill active">學程分類</button> -->
+      <button class="fill active" data-modal-value="1">說故事與多媒體</button>
+      <button class="fill active" data-modal-value="2">跨領域設計</button>
+      <button class="fill active" data-modal-value="3">音樂與藝術</button>
+    </div>
+    <div class="dividegroup">
+      <!-- <button class="fill-class active">向度分類</button> -->
+      <button class="fill-class active" data-class-value="A">A類</button>
+      <button class="fill-class active" data-class-value="B">B類</button>
+      <button class="fill-class active" data-class-value="C">C類</button>
+    </div>
+    <div class="choose-class" id="choose-class">
+      <i class="fas fa-book"></i>
+    </div>
+    <div class="open_choose_class">
+      <div class="modal modal_center">
+        <h2>已挑選課程</h2>
+        <hr />
+        <button data-close-button class="close-btn">
+          <i class="fas fa-window-close"></i>Close
+        </button>
+      </div>
+    </div>
+  </body>
+  <script>
+    const labels = ["實用性", "跨域力", "難易度", "實作度", "理論度"];
+    const classList = JSON.parse(localStorage.getItem("classList")) || [];
+    // const classList = [];
+    const classifyset = new Set();
+    const groupset = new Set();
+    let class_checks;
+    let chosedclass;
+    var classDatas;
+    let RadarCharts = [];
+    var openModalButtons, closeModalButtons;
+    fetch("localdata.json", {})
+      .then((response) => response.json())
+      .then((jsonData) => {
+        classDatas = jsonData;
+        GenerateBarStrucure(classDatas);
+      })
+      .catch((err) => {
+        console.log("錯誤:", err);
+      });
+    function GenerateBarStrucure(RawData) {
+      let len = classDatas.length;
+      for (let i = 0; i < len; i++) {
+        let newBar = document.createElement("div");
+        newBar.className = "bar";
+        newBar.innerHTML =
+          '<button class="check"><i class="fas fa-star"></i><span class="cart-item"></span></button><div class="chart"><div class="name"></div><div class="taggroup"></div><div class="card-footer"><div class="stats"><div class="stat"><span class="label">學分數</span><span class="value">2</span></div><div class="stat"><span class="label">類別</span><span class="value">Ｃ</span></div><div class="stat"><span class="label">時段</span><span class="value">W34</span></div></div></div><div class="group"><div class="class-intro button"><button class="open-btn text" data-modal-target="#modal0_' +
+          i +
+          '">課程大綱</button><div class="modal modal_bottom" id="modal0_' +
+          i +
+          '"><h2>課程大綱</h2><hr /><iframe width="100%"height="100%"></iframe><button data-close-button class="close-btn"><i class="fas fa-window-close"></i>Close</button></div></div><div class="class-intro button"><button class="open-btn text" data-modal-target="#modal1_' +
+          i +
+          '">課程簡介</button><div class="modal modal_center" id="modal1_' +
+          i +
+          '"><h2>課程簡介</h2><hr /><p></p><button data-close-button class="close-btn"><i class="fas fa-window-close"></i>Close</button></div></div></div></div><div class="illustrator"><canvas id="myChart' +
+          i +
+          '"></canvas></div>';
+        document.body.appendChild(newBar);
+        classDatas[i].display = 1;
+      }
+      SetBarValue(RawData, len);
+      openModalButtons = document.querySelectorAll("[data-modal-target]");
+      closeModalButtons = document.querySelectorAll("[data-close-button]");
+      openModalButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          // console.log(button.dataset.modalTarget);
+          const modal = document.querySelector(button.dataset.modalTarget);
+          openModal(modal);
+        });
+      });
+      closeModalButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const modal = button.closest(".modal");
+          closeModal(modal);
+        });
+      });
+      console.log(classDatas);
+      addStarbuttonInteractive();
+      check_classList();
+    }
+    function checkSetInteraction(index) {
+      for (const setValue of classDatas[index]["divide"]) {
+        if (classifyset.has(setValue)) {
+          return true;
+        }
+      }
+      return false;
+    }
+    function checkGroupInteraction(index) {
+      for (const setValue of classDatas[index]["classify"]) {
+        // console.log(setValue)
+        // console.log(groupset)
+        if (groupset.has(setValue)) {
+          return true;
+        }
+      }
+      return false;
+    }
+    function SetBarValue(RawData, len) {
+      classifyset.add("1");
+      classifyset.add("2");
+      classifyset.add("3");
+      groupset.add("A");
+      groupset.add("B");
+      groupset.add("C");
+      let bar = document.getElementsByClassName("bar");
+      const card_footer = document.getElementsByClassName("card-footer");
+      const classname = document.getElementsByClassName("name");
+      const taggroup = document.getElementsByClassName("taggroup");
+      for (let i = 0; i < len; i++) {
+        setClassIndex(i);
+        classname[i].innerHTML = classDatas[i]["classname"];
+        cardvalues = card_footer[i].getElementsByClassName("value");
+        cardvalues[0].innerText = classDatas[i]["credit"];
+        cardvalues[1].innerText = classDatas[i]["classify"];
+        cardvalues[2].innerText = classDatas[i]["time"];
+        intro = bar[i].querySelector("p");
+        intro.innerText = classDatas[i]["intro"];
+        // link = bar[i].querySelector("a");
+        // link = bar[i].querySelector("iframe");
+        // link.src = classDatas[i]["url"];
+        const tags = classDatas[i]["tag"].split(",");
+        let tagscontant = "";
+        for (let j = 0; j < tags.length; j++) {
+          tagscontant += '<div class="tag">' + tags[j] + "</div>";
+        }
+        taggroup[i].innerHTML = tagscontant;
+        const words = classDatas[i]["value"].split(",");
+        DrawLadarGraph(labels, words, i);
+      }
+    }
+    function setClassIndex(index) {
+      classDatas[index].divide = new Set();
+      if (classDatas[index]["tag"].includes("說故事")) {
+        classDatas[index]["divide"].add("1");
+      }
+      if (classDatas[index]["tag"].includes("設計")) {
+        classDatas[index]["divide"].add("2");
+      }
+      if (
+        classDatas[index]["tag"].includes("音樂") ||
+        classDatas[index]["tag"].includes("藝術")
+      ) {
+        classDatas[index]["divide"].add("3");
+      }
+    }
+    // Using Chart Js to draw Radar Graph
+    function DrawLadarGraph(labels, words, index) {
+      const data = {
+        labels: labels,
+        datasets: [
+          {
+            // label: '數值',
+            backgroundColor: "rgba(255, 99, 132,.1)",
+            borderColor: "rgb(255, 99, 132)",
+            borderWidth: 3,
+            data: words,
+          },
+        ],
+      };
+      const config = {
+        type: "radar",
+        data: data,
+        options: {
+          plugins: {
+            legend: {
+              display: false,
+            },
+          },
+          animations: {
+            tension: {
+              duration: 1000,
+              easing: "linear",
+              from: 0.2,
+              to: 0,
+              loop: true,
+            },
+          },
+          scales: {
+            r: {
+              suggestedMin: 0,
+              suggestedMax: 5,
+              backgroundColor: "rgb(226, 225, 224)",
+              angleLines: {
+                color: "rgba(111, 111, 111,.5)",
+              },
+              ticks: {
+                backdropColor: "rgba(226, 225, 224,0)",
+                padding: 10,
+                z: 10,
+                font: {
+                  size: 18,
+                },
+              },
+              pointLabels: {
+                font: {
+                  size: 16,
+                  weight: 700,
+                },
+              },
+            },
+          },
+        },
+      };
+      Chart.defaults.font.family = "微軟正黑體";
+      Chart.defaults.font.size = 18;
+      // the following line was temporary neglected,it is important bug need to be fixed
+      // Chart.defaults.global.legend.display = false;
+      const myChart = new Chart(
+        document.getElementById("myChart" + index),
+        config
+      );
+      RadarCharts.push(myChart);
+    }
+    function SearchFunction() {
+      console.log(classDatas);
+      var input, filter, ul, li, a, i, txtValue;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase().replace(/\s+/g, "");
+      let bar = document.getElementsByClassName("bar");
+      let classname = document.getElementsByClassName("name");
+      let group = document.getElementsByClassName("taggroup");
+      for (i = 0; i < bar.length; i++) {
+        let str = "";
+        tags = group[i].getElementsByClassName("tag");
+        for (let j = 0; j < tags.length; j++) {
+          str += tags[j].innerText;
+        }
+        str += classname[i].innerText;
+        // if (str.toUpperCase().indexOf(filter) > -1) {
+        //   classDatas[i].display = 1;
+        // } else {
+        //   classDatas[i].display = 0;
+        // }
+        // rerender();
+        if (
+          str.toUpperCase().indexOf(filter) > -1 &&
+          checkSetInteraction(i) &&
+          checkGroupInteraction(i)
+        ) {
+          classDatas[i].display = 1;
+          bar[i].style.display = "";
+        } else {
+          if (str.toUpperCase().indexOf(filter) <= -1) {
+            classDatas[i].display = 0;
+          } else {
+            classDatas[i].display = 1;
+          }
+          bar[i].style.display = "none";
+        }
+      }
+    }
+    function sortColumn(col, asc) {
+      closecheckbox();
+      classDatas = classDatas.sort((class1, class2) => {
+        return asc
+          ? class1["value"][2 * col] - class2["value"][2 * col]
+          : class2["value"][2 * col] - class1["value"][2 * col];
+      });
+      // console.log(classDatas);
+      rerender();
+    }
+    function closecheckbox() {
+      checkboxs = document.querySelectorAll(".dropdown-sub");
+      // console.log("length", checkboxs.length);
+      checkboxs.forEach((box) => {
+        box.checked = false;
+        // console.log(box.checked);
+      });
+      document.querySelector(".dropdown").checked = false;
+      // console.log(document.querySelector(".dropdown").checked);
+    }
+    function rerender() {
+      const card_footer = document.getElementsByClassName("card-footer");
+      let tags = document.getElementsByClassName("tag");
+      console.log(tags);
+      while (tags.length > 0) {
+        tags[0].parentNode.removeChild(tags[0]);
+      }
+      let bar = document.getElementsByClassName("bar");
+      let classname = document.getElementsByClassName("name");
+      let group = document.getElementsByClassName("taggroup");
+      for (let i = 0; i < classDatas.length; i++) {
+        cardvalues = card_footer[i].getElementsByClassName("value");
+        cardvalues[0].innerText = classDatas[i]["credit"];
+        cardvalues[1].innerText = classDatas[i]["classify"];
+        cardvalues[2].innerText = classDatas[i]["time"];
+        intro = bar[i].querySelector("p");
+        intro.innerText = classDatas[i]["intro"];
+        if (
+          classDatas[i].display == 0 ||
+          !checkSetInteraction(i) ||
+          !checkGroupInteraction(i)
+        ) {
+          bar[i].style.display = "none";
+        } else {
+          bar[i].style.display = "";
+        }
+        classname[i].innerHTML = classDatas[i]["classname"];
+        const tags = classDatas[i]["tag"].split(",");
+        let tagscontant = "";
+        for (let j = 0; j < tags.length; j++) {
+          tagscontant += '<div class="tag">' + tags[j] + "</div>";
+        }
+        group[i].innerHTML = tagscontant;
+        const words = classDatas[i]["value"].split(",");
+        ModifyRadarValue(words, i);
+      }
+      check_classList();
+    }
+    function ModifyRadarValue(words, index) {
+      for (let i = 0; i < words.length; i++) {
+        RadarCharts[index].data.datasets[0].data[i] = words[i];
+      }
+      RadarCharts[index].update();
+    }
+
+    const toTop = document.querySelector(".totop");
+    window.addEventListener("scroll", () => {
+      if (window.pageYOffset > 100) {
+        toTop.classList.add("active");
+      } else {
+        toTop.classList.remove("active");
+      }
+    });
+    const overlay = document.getElementById("overlay");
+    overlay.addEventListener("click", () => {
+      modals = document.querySelectorAll(".modal.active");
+      modals.forEach((modal) => {
+        closeModal(modal);
+      });
+    });
+
+    function openModal(modal) {
+      if (modal == null) return;
+      if (modal.querySelector("iframe") != null) {
+        // modal.querySelector("iframe")
+        link = modal.querySelector("iframe");
+        id_str = modal.id;
+        console.log(id_str.substring(7, 20));
+        // let bar = document.getElementsByClassName("bar");
+        // link = bar[id_str.substring(7, 20)].querySelector("iframe");
+        link.src = classDatas[id_str.substring(7, 20)]["url"];
+      }
+      modal.classList.add("active");
+      overlay.classList.add("active");
+    }
+    function closeModal(modal) {
+      if (modal == null) return;
+      modal.classList.remove("active");
+      overlay.classList.remove("active");
+    }
+    window.onload = function () {
+      SearchFunction();
+    };
+    // const myJSON = '[{"id":[1,2,3,4,5]},{"id":[4,2,3,4,2]}]';
+    // let loc = JSON.parse(fs.readFileSync("./localdata.json"));
+
+    // const loc = require("localdata.json");
+    let valueButtons = document.querySelectorAll("[data-modal-value]");
+    valueButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const modal = button.dataset.modalValue;
+        dataModal(button, modal);
+        console.log(classifyset);
+        rerender();
+      });
+    });
+    let classButtons = document.querySelectorAll("[data-class-value]");
+    classButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const modal = button.dataset.classValue;
+        classifyModal(button, modal);
+
+        console.log(groupset);
+        rerender();
+      });
+    });
+    function classifyModal(button, value) {
+      if (button == null) return;
+      if (button.classList.contains("active")) {
+        button.classList.remove("active");
+        groupset.delete(value);
+      } else {
+        button.classList.add("active");
+        groupset.add(value);
+      }
+    }
+    function dataModal(button, value) {
+      if (button == null) return;
+      if (button.classList.contains("active")) {
+        button.classList.remove("active");
+        classifyset.delete(value);
+      } else {
+        button.classList.add("active");
+        classifyset.add(value);
+      }
+    }
+
+    // class_checks = document.querySelectorAll(".check");
+    function check_classList() {
+      const bars = document.querySelectorAll(".bar");
+      bars.forEach((bar) => {
+        classname = bar.getElementsByClassName("name");
+        // console.log(classname[0].innerText);
+        // console.log(classList.indexOf(classname[0].innerText));
+        classcheck = bar.getElementsByClassName("check")[0];
+        if (classList.indexOf(classname[0].innerText) >= 0) {
+          classcheck.getElementsByClassName("fas")[0].classList.add("checked");
+          let r = document.querySelector(":root");
+          r.style.setProperty("--classchoose", '"' + classList.length + '"');
+        } else {
+          classcheck
+            .getElementsByClassName("fas")[0]
+            .classList.remove("checked");
+        }
+      });
+    }
+
+    // console.log(class_checks.length);
+
+    function updateLocalStorage() {
+      localStorage.setItem("classList", JSON.stringify(classList));
+    }
+    chosedclass = document.querySelector(".choose-class");
+    chosedclass.addEventListener("click", () => {
+      const open_class = document.querySelector(".open_choose_class");
+      const insert_node = open_class.getElementsByClassName("close-btn");
+      let class_content = document.createElement("div");
+      if (classList.length == 0) {
+        class_content.classList.add("empty-frame");
+        class_content.innerHTML = '<div class="empty" ></div>';
+      } else {
+        class_content.classList.add("modal-color");
+        let block_content = "";
+        for (let i = 0; i < classList.length; i++) {
+          block_content +=
+            '<div class="corner" >' + (i + 1) + ". " + classList[i] + "</div>";
+        }
+        class_content.innerHTML = block_content;
+      }
+      if (open_class.querySelector("#modify-block") != undefined) {
+        const del_node = open_class.querySelector("#modify-block");
+        del_node.parentNode.removeChild(del_node);
+      }
+      class_content.setAttribute("id", "modify-block");
+      open_class
+        .getElementsByClassName("modal")[0]
+        .insertBefore(class_content, insert_node[0]);
+      open_class.getElementsByClassName("modal")[0].classList.add("active");
+      overlay.classList.add("active");
+    });
+    function addStarbuttonInteractive() {
+      // console.log("Test.............");
+      class_checks = document.querySelectorAll(".check");
+      class_checks.forEach((button) => {
+        button.addEventListener("click", () => {
+          button_star = button.getElementsByClassName("fas");
+          classname = button.parentElement.getElementsByClassName("name");
+          let r = document.querySelector(":root");
+          if (button_star[0].classList.contains("checked")) {
+            button_star[0].classList.remove("checked");
+            classList.splice(classList.indexOf(classname[0].innerText), 1);
+            r.style.setProperty("--classchoose", '"' + classList.length + '"');
+          } else {
+            button_star[0].classList.add("checked");
+            let posCart = document.getElementById("choose-class");
+            let posCartRect = posCart.getBoundingClientRect();
+            let posAddCart = button_star[0].getBoundingClientRect();
+
+            let xchange = posCartRect.right - posAddCart.right;
+            let ychange = posCartRect.top - posAddCart.top;
+
+            classList.push(classname[0].innerText);
+            r.style.setProperty("--decX", xchange + "px");
+            r.style.setProperty("--decY", ychange + "px");
+            // button.addClass("sendtocart");
+            button_star[0].classList.add("active");
+            setTimeout(function () {
+              button_star[0].classList.remove("active");
+              posCart.classList.add("shake");
+              r.style.setProperty(
+                "--classchoose",
+                '"' + classList.length + '"'
+              );
+              setTimeout(function () {
+                posCart.classList.remove("shake");
+              }, 500);
+            }, 1000);
+          }
+          updateLocalStorage();
+          console.log(classList);
+        });
+      });
+    }
+  </script>
+</html>
