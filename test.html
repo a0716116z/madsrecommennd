@@ -1124,7 +1124,7 @@
       });
     function GenerateBarStrucure(RawData) {
       let len = classDatas.length;
-      for (let i = 0; i < 50; i++) {
+      for (let i = 0; i < len; i++) {
         let newBar = document.createElement("div");
         newBar.className = "bar";
         // newBar.innerHTML =
@@ -1154,25 +1154,24 @@
         document.body.appendChild(newBar);
         classDatas[i].display = 1;
       }
-      // SetBarValue(RawData, len);
-      // openIframeButtons = document.querySelectorAll("[data-modal-target]");
-      // closeModalButtons = document.querySelectorAll("[data-close-button]");
-      // openIframeButtons.forEach((button) => {
-      //   button.addEventListener("click", () => {
-      //     const modal = document.querySelector(button.dataset.modalTarget);
-      //     openModal(modal);
-      //   });
-      // }
-      // );
-      // closeModalButtons.forEach((button) => {
-      //   button.addEventListener("click", () => {
-      //     const modal = button.closest(".modal");
-      //     closeModal(modal);
-      //   });
-      // });
-      // console.log(classDatas);
-      // addStarbuttonInteractive();
-      // check_classList();
+      SetBarValue(RawData, len);
+      openIframeButtons = document.querySelectorAll("[data-modal-target]");
+      closeModalButtons = document.querySelectorAll("[data-close-button]");
+      openIframeButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const modal = document.querySelector(button.dataset.modalTarget);
+          openModal(modal);
+        });
+      });
+      closeModalButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const modal = button.closest(".modal");
+          closeModal(modal);
+        });
+      });
+      console.log(classDatas);
+      addStarbuttonInteractive();
+      check_classList();
     }
     function checkSetInteraction(index) {
       for (const setValue of classDatas[index]["divide"]) {
