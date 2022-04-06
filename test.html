@@ -1117,14 +1117,17 @@
       .then((response) => response.json())
       .then((jsonData) => {
         classDatas = jsonData;
-        GenerateBarStrucure(classDatas);
+        setTimeout("GenerateBarStrucure(classDatas)", 1000);
+        // GenerateBarStrucure(classDatas);
+        console.log("excetive");
       })
       .catch((err) => {
         console.log("錯誤:", err);
       });
     function GenerateBarStrucure(RawData) {
+      console.log("fine");
       let len = classDatas.length;
-      for (let i = 0; i < len; i++) {
+      for (let i = 0; i < 10; i++) {
         let newBar = document.createElement("div");
         newBar.className = "bar";
         // newBar.innerHTML =
