@@ -1112,7 +1112,7 @@
     let chosedclass;
     var classDatas;
     let RadarCharts = [];
-    var openModalButtons, closeModalButtons;
+    var openIframeButtonsButtons, closeModalButtons;
     fetch("localdata.json", {})
       .then((response) => response.json())
       .then((jsonData) => {
@@ -1127,12 +1127,24 @@
       for (let i = 0; i < len; i++) {
         let newBar = document.createElement("div");
         newBar.className = "bar";
+        // newBar.innerHTML =
+        //   '<button class="check"><i class="fas fa-star"></i><span class="cart-item"></span></button><div class="chart"><div class="name"></div><div class="taggroup"></div><div class="card-footer"><div class="stats"><div class="stat"><span class="label">學分數</span><span class="value">2</span></div><div class="stat"><span class="label">類別</span><span class="value">Ｃ</span></div><div class="stat"><span class="label">時段</span><span class="value">W34</span></div></div></div><div class="group"><div class="class-intro button"><button class="open-btn text" data-modal-target="#modal0_' +
+        //   i +
+        //   '">課程大綱</button><div class="modal modal_bottom" id="modal0_' +
+        //   i +
+        //   '"><h2>課程大綱</h2><hr /><iframe width="100%"height="100%"></iframe><button data-close-button class="close-btn"><i class="fas fa-window-close"></i>Close</button></div></div><div class="class-intro button"><button class="open-btn text" data-modal-target="#modal1_' +
+        //   i +
+        //   '">課程簡介</button><div class="modal modal_center" id="modal1_' +
+        //   i +
+        //   '"><h2>課程簡介</h2><hr /><p></p><button data-close-button class="close-btn"><i class="fas fa-window-close"></i>Close</button></div></div></div></div><div class="illustrator"><canvas id="myChart' +
+        //   i +
+        //   '"></canvas></div>';
         newBar.innerHTML =
           '<button class="check"><i class="fas fa-star"></i><span class="cart-item"></span></button><div class="chart"><div class="name"></div><div class="taggroup"></div><div class="card-footer"><div class="stats"><div class="stat"><span class="label">學分數</span><span class="value">2</span></div><div class="stat"><span class="label">類別</span><span class="value">Ｃ</span></div><div class="stat"><span class="label">時段</span><span class="value">W34</span></div></div></div><div class="group"><div class="class-intro button"><button class="open-btn text" data-modal-target="#modal0_' +
           i +
           '">課程大綱</button><div class="modal modal_bottom" id="modal0_' +
           i +
-          '"><h2>課程大綱</h2><hr /><iframe width="100%"height="100%"></iframe><button data-close-button class="close-btn"><i class="fas fa-window-close"></i>Close</button></div></div><div class="class-intro button"><button class="open-btn text" data-modal-target="#modal1_' +
+          '"><h2>課程大綱</h2><hr /><button data-close-button class="close-btn"><i class="fas fa-window-close"></i>Close</button></div></div><div class="class-intro button"><button class="open-btn text" data-modal-target="#modal1_' +
           i +
           '">課程簡介</button><div class="modal modal_center" id="modal1_' +
           i +
@@ -1143,9 +1155,9 @@
         classDatas[i].display = 1;
       }
       SetBarValue(RawData, len);
-      openModalButtons = document.querySelectorAll("[data-modal-target]");
+      openIframeButtons = document.querySelectorAll("[data-modal-target]");
       closeModalButtons = document.querySelectorAll("[data-close-button]");
-      openModalButtons.forEach((button) => {
+      openIframeButtons.forEach((button) => {
         button.addEventListener("click", () => {
           // console.log(button.dataset.modalTarget);
           const modal = document.querySelector(button.dataset.modalTarget);
