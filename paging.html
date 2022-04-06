@@ -34,6 +34,11 @@
         background-repeat: repeat;
         background-size: 4%;
       }
+      .container {
+        margin: 10px auto;
+        width: 50%;
+        padding: 0;
+      }
       .bar {
         position: relative;
         width: 50%;
@@ -709,6 +714,12 @@
           transform: translate(var(--decX), var(--decY));
         }
       }
+      .btn-info {
+        color: #000;
+        background-color: rgb(226, 225, 224);
+        border: #989898 2px solid;
+        margin: 0 2px;
+      }
       /* @keyframes yAxis {
         100% {
           transform: translateY(var(--decY));
@@ -731,6 +742,9 @@
       @media (max-width: 1360px) and (min-width: 780px) {
         .check {
           display: inline-block;
+        }
+        .container {
+          width: 80%;
         }
         .bar {
           width: 80%;
@@ -795,6 +809,9 @@
           right: 60px;
           top: 0;
           display: block;
+        }
+        .container {
+          width: 95%;
         }
         .bar {
           width: 95%;
@@ -1175,15 +1192,15 @@
       }
       // console.log(maxLeft, maxRight);
       for (let page = maxLeft; page <= maxRight; page++) {
-        wrapper.innerHTML += `<button value=${page} class="page btn btn-sm btn-info">${page}</button>`;
+        wrapper.innerHTML += `<button value=${page} class="page btn  btn-info">${page}</button>`;
       }
       if (state.page != 1) {
         wrapper.innerHTML =
-          `<button value=${1} class="page btn btn-sm btn-info">&#171; First</button>` +
+          `<button value=${1} class="page btn  btn-info">&#171; First</button>` +
           wrapper.innerHTML;
       }
       if (state.page != pages) {
-        wrapper.innerHTML += `<button value=${pages} class="page btn btn-sm btn-info">Last &#187;</button>`;
+        wrapper.innerHTML += `<button value=${pages} class="page btn  btn-info">Last &#187;</button>`;
       }
       cur_pages = document.querySelectorAll(".page");
       cur_pages.forEach((page) => {
