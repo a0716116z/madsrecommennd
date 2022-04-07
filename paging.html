@@ -175,7 +175,7 @@
         display: block;
         color: #000;
       }
-      .class-intro .modal {
+      .class-intro .modals {
         background-color: white;
         width: 80%;
         max-width: 500px;
@@ -383,10 +383,10 @@
         display: block;
         margin: 0px auto 0px;
       }
-      .noticegroup .modal {
+      .noticegroup .modals {
         background-color: white;
         width: 80%;
-        max-width: 500px;
+        max-width: 600px;
         display: flex;
         flex-direction: column;
         padding: 20px;
@@ -399,11 +399,11 @@
         transition: 200ms ease-in-out;
         z-index: 2000;
       }
-      .noticegroup .modal.active {
+      .noticegroup .modals.active {
         transform: translate(-50%, -50%) scale(1);
       }
-      .open_choose_class .modal,
-      .class-intro .modal {
+      .open_choose_class .modals,
+      .class-intro .modals {
         background-color: white;
         display: flex;
         position: fixed;
@@ -442,18 +442,18 @@
       .modal_center.active {
         transform: translate(-50%, -50%) scale(1);
       }
-      .modal h1,
-      .modal h2,
-      .modal h3,
-      .modal h4,
-      .modal h5 {
+      .modals h1,
+      .modals h2,
+      .modals h3,
+      .modals h4,
+      .modals h5 {
         margin: 0px;
         padding: 0px 0px 15px 0px;
         font-family: "Noto Sans KR", sans-serif;
         font-size: 30px;
         color: #282828;
       }
-      .modal hr {
+      .modals hr {
         display: block;
         border: none;
         height: 3px;
@@ -462,7 +462,7 @@
         transition-timing-function: cubic-bezier(0.795, 0, 0.165, 1);
         /* custom */
       }
-      .modal p {
+      .modals p {
         margin: 15px 0px 0px 0px;
         /* font-family: "Noto Sans KR", sans-serif; */
         font-weight: 500;
@@ -474,9 +474,10 @@
         color: #282828;
         animation-duration: 1.5s;
         overflow: auto;
-        max-height: 60vh;
+        /* height: 50%; */
+        max-height: 50vh;
       }
-      .modal .fas {
+      .modals .fas {
         background: rgba(255, 99, 133, 0.3);
         padding: 3px 10px;
         margin: 2px;
@@ -486,12 +487,12 @@
       .noticegroup .open-btn {
         border: none;
         background-color: rgb(167, 218, 169);
-        width: 100%;
-        max-width: 300px;
-        margin: 10px auto;
+        width: 45%;
+        max-width: 200px;
+        margin: 10px 10px 10px 0px;
         font-weight: bold;
         font-size: 18px;
-        padding: 10px 20px;
+        padding: 10px 5px;
         color: white;
       }
       .open_choose_class .close-btn,
@@ -719,10 +720,47 @@
         }
       }
       .btn-info {
+        background: transparent;
+        background-color: rgba(255, 255, 255, 0.468);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        display: inline-block;
+        box-shadow: inset 2px 2px 2px 0px rgba(97, 97, 97, 0.5),
+          7px 7px 20px 0px rgba(0, 0, 0, 0.1),
+          4px 4px 5px 0px rgba(0, 0, 0, 0.1);
+        outline: none;
+        border: none;
         color: #000;
+        /* color: #000;
         background-color: rgb(226, 225, 224);
-        border: #989898 2px solid;
+        border: #989898 2px solid; */
         margin: 0 2px;
+      }
+      .btn-info:after {
+        position: absolute;
+        content: "";
+        width: 0;
+        height: 100%;
+        top: 0;
+        left: 0;
+        direction: rtl;
+        z-index: -1;
+        box-shadow: -7px -7px 10px 0px rgba(255, 255, 255, 0.215),
+          -4px -4px 5px 0px #fff9, 7px 7px 10px 0px #0002, 4px 4px 5px 0px #0001;
+        transition: all 0.3s ease;
+      }
+      .btn-info:hover {
+        background-color: rgba(255, 255, 255, 0.797);
+        color: #000;
+      }
+      .btn-info:hover:after {
+        left: auto;
+        right: 0;
+        width: 100%;
+      }
+      .btn-info:active {
+        top: 2px;
       }
       /* @keyframes yAxis {
         100% {
@@ -950,7 +988,7 @@
           name="dropdown"
         />
         <label class="for-dropdown" for="dropdown"
-          >排序方式<i class="fas fa-bars"></i
+          >評分排序<i class="fas fa-bars"></i
         ></label>
         <div class="section-dropdown">
           <label class="for-dropdown-sub" for="dropdown-sub1"
@@ -1088,14 +1126,16 @@
 
     <div class="noticegroup">
       <button class="open-btn" data-modal-target="#modal">
-        <i class="fas fa-exclamation"></i>使用細節與注意事項
+        <i class="fas fa-exclamation"></i>跨域申請懶人包
       </button>
-      <div class="modal" id="modal">
-        <h2>使用細節與注意事項</h2>
+      <div class="modals modal_center" id="modal">
+        <h2>跨域申請懶人包</h2>
         <hr />
         <p>
           <i class="fas fa-exclamation"></i
-          >跨領域申請每學年下半學期開放申請，時間請參照：<br />
+          >跨領域申請每學年下半學期開放申請，時間請參照：
+          <a href="https://cross.web.nycu.edu.tw" target="_blank">點此</a>
+          <br />
           <i class="fas fa-exclamation"></i>申請條件：跨域學程申請表、
           歷年成績單(正本)、自傳、申請動機、讀書計畫，其他有利申請文件 <br />
           <i class="fas fa-check"></i
@@ -1107,6 +1147,31 @@
           <i class="fas fa-check"></i>音樂與藝術
           ：A類「藝術與音樂基礎」、B類「講授與專題課程」、C類「工作坊」<br />
           總學分28學分（Ａ類基礎必修至少2門，B類至少5門，C類至少3門）
+        </p>
+        <button data-close-button class="close-btn">
+          <i class="fas fa-window-close"></i>Close
+        </button>
+      </div>
+      <button class="open-btn" data-modal-target="#modal2">
+        <i class="fas fa-bullhorn"></i>評分標準
+      </button>
+      <div class="modals modal_center" id="modal2">
+        <h2>評分標準</h2>
+        <hr />
+        <p>
+          <i class="fas fa-exclamation"></i><b>創意度</b>
+          越高表示這門課需要越多自由發想，越低則表示依照規定或者教學進行工作。
+          <br />
+          <i class="fas fa-exclamation"></i><b>上手度</b>
+          這門課必需要投入學習以及製作作品各項時間的總和，越高希望同學空下來給課堂學習的時間越多
+          <br />
+          <i class="fas fa-check"></i
+          ><b>實作度</b> 實作度越高越看重實作，越低越重視理論。 <br />
+          <i class="fas fa-check"></i
+          ><b>團隊力</b>
+          是否要求團隊的合作越低越偏向個人導向的課程，越高越偏向團體的課程<br />
+          <i class="fas fa-check"></i><b>先修度</b>
+          是否適合初進入跨領域的人進行先修，越高的需要先備的學習課程也會越多
         </p>
         <button data-close-button class="close-btn">
           <i class="fas fa-window-close"></i>Close
@@ -1129,7 +1194,7 @@
       <i class="fas fa-book"></i>
     </div>
     <div class="open_choose_class">
-      <div class="modal modal_center">
+      <div class="modals modal_center">
         <h2>已挑選課程</h2>
         <hr />
         <button data-close-button class="close-btn">
@@ -1281,11 +1346,11 @@
         newBar.innerHTML =
           '<button class="check"><i class="fas fa-star"></i><span class="cart-item"></span></button><div class="chart"><div class="name"></div><div class="taggroup"></div><div class="card-footer"><div class="stats"><div class="stat"><span class="label">學分數</span><span class="value">2</span></div><div class="stat"><span class="label">類別</span><span class="value">Ｃ</span></div><div class="stat"><span class="label">時段</span><span class="value">W34</span></div></div></div><div class="group"><div class="class-intro button"><button class="open-btn text" data-modal-target="#modal0_' +
           i +
-          '">課程大綱</button><div class="modal modal_bottom" id="modal0_' +
+          '">課程大綱</button><div class="modals modal_bottom" id="modal0_' +
           i +
           '"><h2>課程大綱</h2><hr /><iframe width="100%"height="100%"></iframe><button data-close-button class="close-btn"><i class="fas fa-window-close"></i>Close</button></div></div><div class="class-intro button"><button class="open-btn text" data-modal-target="#modal1_' +
           i +
-          '">課程簡介</button><div class="modal modal_center" id="modal1_' +
+          '">課程簡介</button><div class="modals modal_center" id="modal1_' +
           i +
           '"><h2>課程簡介</h2><hr /><p></p><button data-close-button class="close-btn"><i class="fas fa-window-close"></i>Close</button></div></div></div></div><div class="illustrator"><canvas id="myChart' +
           i +
@@ -1306,7 +1371,7 @@
       });
       closeModalButtons.forEach((button) => {
         button.addEventListener("click", () => {
-          const modal = button.closest(".modal");
+          const modal = button.closest(".modals");
           closeModal(modal);
         });
       });
@@ -1628,7 +1693,7 @@
     });
     const overlay = document.getElementById("overlay");
     overlay.addEventListener("click", () => {
-      modals = document.querySelectorAll(".modal.active");
+      modals = document.querySelectorAll(".modals.active");
       modals.forEach((modal) => {
         closeModal(modal);
       });
@@ -1752,9 +1817,9 @@
       }
       class_content.setAttribute("id", "modify-block");
       open_class
-        .getElementsByClassName("modal")[0]
+        .getElementsByClassName("modals")[0]
         .insertBefore(class_content, insert_node[0]);
-      open_class.getElementsByClassName("modal")[0].classList.add("active");
+      open_class.getElementsByClassName("modals")[0].classList.add("active");
       overlay.classList.add("active");
     });
     function addStarbuttonInteractive() {
