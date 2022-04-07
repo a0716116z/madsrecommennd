@@ -14,6 +14,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
     />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
     <link rel="stylesheet" href="./iconstyle.css" />
     <style>
       :root {
@@ -268,6 +269,7 @@
         border-left: 4px solid rgba(255, 99, 133, 0.95);
         border-radius: 0 0 0 0;
         /* position: relative; */
+        margin: 0;
         text-decoration: none;
         z-index: 100;
         display: inline-block;
@@ -314,7 +316,7 @@
         /* top: 200px; */
         left: 150px;
       }
-      .dropdown:checked ~ .section-dropdown {
+      .dropdowns:checked ~ .section-dropdown {
         visibility: visible;
         opacity: 1;
         top: 0;
@@ -589,7 +591,8 @@
         color: rgb(222, 220, 220);
         border-radius: 5px;
         text-align: center;
-        transition: 0.8s;
+        transition-delay: 1s;
+        transition: 0.3s;
         box-shadow: 2px 3px 8px #b7b7b7, -2px -3px 8px #7e7e7e;
       }
 
@@ -620,6 +623,7 @@
         display: block;
         background: transparent;
         color: rgb(255, 213, 0);
+        /* animation-delay: 0.3s; */
         animation: xAxis 1s forwards cubic-bezier(1, 0.84, 0.64, 0.25);
         box-shadow: none;
         /* border: #000 1px solid; */
@@ -805,8 +809,12 @@
         }
 
         .drop-menu {
+          float: right;
+          width: 45%;
+          font-size: 14px;
+          padding: 0;
           position: absolute;
-          right: 60px;
+          right: 0;
           top: 0;
           display: block;
         }
@@ -935,7 +943,12 @@
 					</select>
 				</div> -->
       <div class="drop-menu">
-        <input class="dropdown" type="checkbox" id="dropdown" name="dropdown" />
+        <input
+          class="dropdowns"
+          type="checkbox"
+          id="dropdown"
+          name="dropdown"
+        />
         <label class="for-dropdown" for="dropdown"
           >排序方式<i class="fas fa-bars"></i
         ></label>
@@ -1497,7 +1510,7 @@
       checkboxs.forEach((box) => {
         box.checked = false;
       });
-      document.querySelector(".dropdown").checked = false;
+      document.querySelector(".dropdowns").checked = false;
     }
     function rerender_pagination() {
       inital = false;
