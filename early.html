@@ -29,6 +29,7 @@
         display: flex;
         font-size: 16px;
         height: 400px;
+        transition: 0.7s;
         /* margin: 20px; */
         /* border: 2px solid black; */
         background-color: rgb(226, 225, 224);
@@ -49,6 +50,7 @@
         align-items: center;
       }
       .name {
+        transition: 0.3s;
         font-weight: 800;
         font-size: 36px;
         text-align: center;
@@ -57,12 +59,18 @@
       }
       .group {
         position: absolute;
-        left: 20px;
+        /* left: 20px; */
         bottom: 10%;
+        width: 100%;
+        padding: 10px;
+        display: flex;
+        justify-content: space-around;
       }
       .button {
-        float: left;
-        margin: 0 8px;
+        transition: 0.3s;
+        /* float: left; */
+        display: inline-block;
+        /* margin: 0 8px; */
         font-size: 18px;
         font-weight: 500;
         letter-spacing: 1px;
@@ -91,6 +99,7 @@
         padding: 13px 20px 13px;
       }
       .tag {
+        transition: 0.3s;
         display: inline-block;
         background: rgb(167, 218, 169);
         padding: 2px;
@@ -216,7 +225,7 @@
       .cover {
         width: 40%;
         max-width: 600px;
-        margin: 20px 20px 20px 0px;
+        margin: 20px 20px 20px 10px;
         display: inline-block;
         padding: 6px 10px;
         background-color: #ebebeb;
@@ -320,7 +329,7 @@
         margin: auto;
         display: flex;
         align-items: center;
-        justify-content: space-around;
+        justify-content: flex-start;
         padding: 0;
       }
       .totop {
@@ -347,7 +356,8 @@
       .totop.active {
         opacity: 1;
       }
-      .noticegroup {
+      .noticegroup,
+      .dividegroup {
         /* background-color: #282828; */
         /* width: 50%; */
         padding: 0 25%;
@@ -395,7 +405,7 @@
       }
       .modal p {
         margin: 15px 0px 0px 0px;
-        font-family: "Noto Sans KR", sans-serif;
+        /* font-family: "Noto Sans KR", sans-serif; */
         font-weight: 500;
         letter-spacing: 1px;
         line-height: 1.6;
@@ -404,6 +414,8 @@
         word-wrap: pre-wrap;
         color: #282828;
         animation-duration: 1.5s;
+        overflow: auto;
+        max-height: 60vh;
       }
       .modal .fas {
         background: rgba(255, 99, 133, 0.3);
@@ -455,7 +467,40 @@
         opacity: 1;
         pointer-events: all;
       }
-
+      .fill.active {
+        color: #f7f7f7;
+        box-shadow: 0 0.5em 0.5em -0.4em rgba(255, 99, 133, 1),
+          inset 0 0 0 2em rgba(255, 99, 133, 1);
+        transform: translateY(-0.25em);
+      }
+      .fill {
+        color: rgba(255, 99, 133, 0.75);
+        transition: 0.5s;
+        /* background: rgba(240, 239, 239, 0.911); */
+        background: transparent;
+        border: 2px solid rgba(255, 99, 133, 0.75);
+        font: inherit;
+        line-height: 1;
+        margin: 0.5em 1em 0.5em 0em;
+        padding: 1em 2em;
+      }
+      .fill-class.active {
+        color: #f7f7f7;
+        box-shadow: 0 0.5em 0.5em -0.4em rgb(166, 202, 135),
+          inset 0 0 0 2em rgb(166, 202, 135);
+        transform: translateY(-0.25em);
+      }
+      .fill-class  {
+        color: rgba(154, 255, 99, 0.75);
+        transition: 0.5s;
+        /* background: rgba(240, 239, 239, 0.911); */
+        background: transparent;
+        border: 2px solid rgba(99, 255, 99, 0.5);
+        font: inherit;
+        line-height: 1;
+        margin: 0.5em .5em 0.5em 0em;
+        padding: .8em 1.5em;
+      }
       @media (max-width: 1360px) and (min-width: 780px) {
         .bar {
           width: 80%;
@@ -464,11 +509,17 @@
         .searchgroup {
           width: 80%;
         }
-        .noticegroup {
+        .noticegroup,
+        .dividegroup {
           padding: 0 10%;
         }
       }
       @media (max-width: 780px) {
+        .fill {
+          margin: 0.25em 0.15em 0.25em 0em;
+          padding: 0.5em 1em;
+          font-size: 16px;
+        }
         .searchgroup {
           width: 95%;
           display: block;
@@ -530,7 +581,8 @@
           width: 80%;
           /* margin: auto; */
         }
-        .noticegroup {
+        .noticegroup,
+        .dividegroup {
           padding: 0 2.5%;
         }
       }
@@ -788,9 +840,24 @@
         </button>
       </div>
     </div>
+    <div class="dividegroup">
+      <!-- <button class="fill active">學程分類</button> -->
+      <button class="fill active" data-modal-value="1">說故事與多媒體</button>
+      <button class="fill active" data-modal-value="2">跨領域設計</button>
+      <button class="fill active" data-modal-value="3">音樂與藝術</button>
+    </div>
+    <div class="dividegroup">
+      <!-- <button class="fill-class active">向度分類</button> -->
+      <button class="fill-class active" data-class-value="A">A類</button>
+      <button class="fill-class active" data-class-value="B">B類</button>
+      <button class="fill-class active" data-class-value="C">C類</button>
+    </div>
+
   </body>
   <script>
     const labels = ["實用性", "跨域力", "難易度", "實作度", "理論度"];
+    const classifyset = new Set();
+    const groupset = new Set();
     var classDatas;
     let RadarCharts = [];
     var openModalButtons, closeModalButtons;
@@ -837,12 +904,37 @@
       });
       console.log(classDatas);
     }
+    function checkSetInteraction(index) {
+      for (const setValue of classDatas[index]["divide"]) {
+        if (classifyset.has(setValue)) {
+          return true;
+        }
+      }
+      return false;
+    }
+    function checkGroupInteraction(index) {
+      for (const setValue of classDatas[index]["classify"]) {
+        // console.log(setValue)
+        // console.log(groupset)
+        if (groupset.has(setValue)) {
+          return true;
+        }
+      }
+      return false;
+    }
     function SetBarValue(RawData, len) {
+      classifyset.add("1");
+      classifyset.add("2");
+      classifyset.add("3");
+      groupset.add("A");
+      groupset.add("B");
+      groupset.add("C");
       let bar = document.getElementsByClassName("bar");
       const card_footer = document.getElementsByClassName("card-footer");
       const classname = document.getElementsByClassName("name");
       const taggroup = document.getElementsByClassName("taggroup");
       for (let i = 0; i < len; i++) {
+        setClassIndex(i);
         classname[i].innerHTML = classDatas[i]["classname"];
         cardvalues = card_footer[i].getElementsByClassName("value");
         cardvalues[0].innerText = classDatas[i]["credit"];
@@ -860,6 +952,21 @@
         taggroup[i].innerHTML = tagscontant;
         const words = classDatas[i]["value"].split(",");
         DrawLadarGraph(labels, words, i);
+      }
+    }
+    function setClassIndex(index) {
+      classDatas[index].divide = new Set();
+      if (classDatas[index]["tag"].includes("說故事")) {
+        classDatas[index]["divide"].add("1");
+      }
+      if (classDatas[index]["tag"].includes("設計")) {
+        classDatas[index]["divide"].add("2");
+      }
+      if (
+        classDatas[index]["tag"].includes("音樂") ||
+        classDatas[index]["tag"].includes("藝術")
+      ) {
+        classDatas[index]["divide"].add("3");
       }
     }
     // Using Chart Js to draw Radar Graph
@@ -945,7 +1052,7 @@
           str += tags[j].innerText;
         }
         str += classname[i].innerText;
-        if (str.toUpperCase().indexOf(filter) > -1) {
+        if (str.toUpperCase().indexOf(filter) > -1 && checkSetInteraction(i)&&checkGroupInteraction(i)) {
           classDatas[i].display = 1;
           bar[i].style.display = "";
         } else {
@@ -955,13 +1062,24 @@
       }
     }
     function sortColumn(col, asc) {
+      closecheckbox();
       classDatas = classDatas.sort((class1, class2) => {
         return asc
           ? class1["value"][2 * col] - class2["value"][2 * col]
           : class2["value"][2 * col] - class1["value"][2 * col];
       });
-      console.log(classDatas);
+      // console.log(classDatas);
       rerender();
+    }
+    function closecheckbox() {
+      checkboxs = document.querySelectorAll(".dropdown-sub");
+      // console.log("length", checkboxs.length);
+      checkboxs.forEach((box) => {
+        box.checked = false;
+        // console.log(box.checked);
+      });
+      document.querySelector(".dropdown").checked = false;
+      // console.log(document.querySelector(".dropdown").checked);
     }
     function rerender() {
       const card_footer = document.getElementsByClassName("card-footer");
@@ -981,7 +1099,7 @@
         intro = bar[i].querySelector("p");
         intro.innerText = classDatas[i]["intro"];
         link.href = classDatas[i]["url"];
-        if (classDatas[i].display == 0) {
+        if (classDatas[i].display == 0 || !checkSetInteraction(i)||!checkGroupInteraction(i)) {
           bar[i].style.display = "none";
         } else {
           bar[i].style.display = "";
@@ -1038,5 +1156,43 @@
     // let loc = JSON.parse(fs.readFileSync("./localdata.json"));
 
     // const loc = require("localdata.json");
+    let valueButtons = document.querySelectorAll("[data-modal-value]");
+    valueButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const modal = button.dataset.modalValue;
+        dataModal(button, modal);
+        console.log(classifyset);
+        rerender();
+      });
+    });
+    let classButtons = document.querySelectorAll("[data-class-value]");
+    classButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const modal = button.dataset.classValue;
+        classifyModal(button, modal);
+        // console.log(classifyset);
+        rerender();
+      });
+    });
+    function classifyModal(button, value) {
+      if (button == null) return;
+      if (button.classList.contains("active")) {
+        button.classList.remove("active");
+        groupset.delete(value);
+      } else {
+        button.classList.add("active");
+        groupset.add(value);
+      }
+    }
+    function dataModal(button, value) {
+      if (button == null) return;
+      if (button.classList.contains("active")) {
+        button.classList.remove("active");
+        classifyset.delete(value);
+      } else {
+        button.classList.add("active");
+        classifyset.add(value);
+      }
+    }
   </script>
 </html>
